@@ -1,0 +1,48 @@
+---
+title: "Palmdale Climate"
+author: "Hannah Garcia-Wickstrum"
+date: "8/11/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+library(janitor)
+library(lubridate)
+library(here)
+```
+
+```{r}
+# Palmdale Temperature: 1933-2019
+# Number of Missing Years: 0
+
+palmdale_temp <- read_csv("palmdale.csv") %>%
+  clean_names()
+
+# Create graph of averages (mean, max, and min)
+
+palmdale_temp_graph <- ggplot(data=palmdale_temp, aes(x=year)) +
+  geom_line(aes(y=mean), color="black") +
+  geom_line(aes(y=max), color="black") +
+  geom_line(aes(y=min), color="black") +
+  geom_point(aes(y=mean), color="black", pch=18, size=1.5) +
+  geom_point(aes(y=max), color="darkred", pch=15, size=1.5) +
+  geom_point(aes(y=min), color="gold", pch=17, size=1.5) +
+  labs(x="Year", y="Degrees Farenheit", title="Palmdale") +
+  scale_x_continuous(limits=c(1933, 2020), breaks=seq(1933,2020,10), expand=c(0,1)) +
+  scale_y_continuous(limits=c(40,85), breaks=seq(40,85,5), expand=c(0,0)) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5))
+
+palmdale_temp_graph
+```
+
+
+
+
