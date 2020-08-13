@@ -60,3 +60,30 @@ fairmont_temp_graph <- ggplot(data=fairmont_temp, aes(x=year_s)) +
 fairmont_temp_graph
 ```
 
+```{r}
+# Fairmont Precipitation: 1916-2019
+# Number of Years Missing: 20
+
+fairmont_precip <- read_csv("fairmont_precip.csv")
+
+fairmont_precip_graph <- ggplot(data=fairmont_precip, aes(x=year, y=annualgrowingseason)) +
+  geom_line(color="blue") +
+  geom_point(color="blue", pch=18, size=1.5) +
+  labs(x="Water Year", y="Annual Precipitation (inches)", title="Fairmont") +
+  scale_x_continuous(limits=c(1915, 2020), breaks=seq(1915,2020,10), expand=c(0,1)) +
+  # scale_y_continuous(limits=c(45,80), breaks=seq(45,80,5), expand=c(0,0)) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5))
+
+fairmont_precip_graph
+```
+
+
+
+```{r}
+# Fairmont Snowfall
+```
+
+
+
+
