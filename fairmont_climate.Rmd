@@ -19,8 +19,8 @@ library(here)
 ```
 
 ```{r}
-# Fairmont Temperature: 1912-2020
-# Number of Missing Years: 14
+# Fairmont Temperature: 1912-2019
+# Number of Missing Years: 13
 
 fairmont_temp <- read_csv("Fairmont_temperature.csv") %>%
   clean_names()

@@ -19,8 +19,8 @@ library(here)
 ```
 
 ```{r}
-# Pasadena Temperature: 1893-2020
-# Number of Missing Years: 16
+# Pasadena Temperature: 1909-2019
+# Number of Missing Years: 0
 
 pasadena_temp <- read_csv("pasadena.csv")
 
