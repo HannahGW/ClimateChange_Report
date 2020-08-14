@@ -16,11 +16,13 @@ library(ggplot2)
 library(janitor)
 library(lubridate)
 library(here)
+library(stargazer)
 ```
 
+
 ```{r}
-# Fairmont Temperature: 1912-2019
-# Number of Missing Years: 13
+### Fairmont Temperature: 1912-2019
+### Number of Missing Years: 13
 
 fairmont_temp <- read_csv("Fairmont_temperature.csv") %>%
   clean_names()
@@ -38,9 +40,9 @@ fairmont_temp_graph <- ggplot(data=fairmont_temp, aes(x=year_s)) +
   scale_x_continuous(limits=c(1920, 2020), breaks=seq(1920,2020,10), expand=c(0,1)) +
   scale_y_continuous(limits=c(45,80), breaks=seq(45,80,5), expand=c(0,0)) +
   theme_minimal() +
-  theme(plot.title = element_text(hjust = 0.5)) +
-  ggpubr::stat_regline_equation(aes(y=mean_f,x=year_s), output.type = "expression") 
-# Need to figure out how to get a trendline on this graph
+  theme(plot.title = element_text(hjust = 0.5))
+
+# ggpubr::stat_regline_equation(aes(y=mean_f,x=year_s), output.type = "expression") 
 
 # stat_regline_equation(
 #   mapping = NULL,
@@ -58,7 +60,59 @@ fairmont_temp_graph <- ggplot(data=fairmont_temp, aes(x=year_s)) +
 #   inherit.aes = TRUE,
 
 fairmont_temp_graph
+
 ```
+
+```{r}
+# Statistics (linear regression (lm)) for mean, max, and min temperatures in Fairmont
+
+## Mean model (lm)
+meantemp_lm <- lm(mean_f ~ year_s, data=fairmont_temp)
+# summary(meantemp_lm)
+stargazer(meantemp_lm, type = "text")
+
+## Max model (lm)
+maxtemp_lm <- lm(max_f ~ year_s, data=fairmont_temp)
+# summary(maxtemp_lm)
+stargazer(maxtemp_lm, type ="text")
+
+## Min model (lm)
+mintemp_lm <- lm(min_f ~ year_s, data=fairmont_temp)
+# summary(mintemp_lm)
+stargazer(mintemp_lm, type = "text")
+
+```
+
+
+```{r}
+# Graph of just one line + statistics (Test)
+# Fairmont mean temperature
+
+fairmont_meantemp_graph <- ggplot(data=fairmont_temp, aes(x=year_s, y=mean_f)) +
+  geom_line(color="black") +
+  geom_point(color="black", pch=18, size=1.5) +
+  scale_x_continuous(limits=c(1920, 2020), breaks=seq(1920,2020,10), expand=c(0,1)) +
+  scale_y_continuous(limits=c(45,80), breaks=seq(45,80,5), expand=c(0,0)) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5))
+
+  # ggpubr::stat_regline_equation(mapping = NULL, 
+  #                               data = NULL,
+  #                               formula = y ~ x, 
+  #                               label.x.npc = "left",
+  #                               label.y.npc = "top",
+  #                               output.type = "expression",
+  #                               geom = "text",
+  #                               position = "identity",
+  #                               na.rm = FALSE,
+  #                               show.legend = NA,
+  #                               inherit.aes = TRUE)
+
+fairmont_meantemp_graph
+
+```
+
+
 
 ```{r}
 # Fairmont Precipitation: 1916-2019
