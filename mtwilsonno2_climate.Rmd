@@ -16,6 +16,7 @@ library(ggplot2)
 library(janitor)
 library(lubridate)
 library(here)
+library(stargazer)
 ```
 
 ```{r}
@@ -41,5 +42,30 @@ mtwilson_temp_graph <- ggplot(data=mtwilson_temp, aes(x=year)) +
   theme(plot.title = element_text(hjust = 0.5))
 
 mtwilson_temp_graph
+```
+
+```{r}
+# Statistics (linear regression (lm)) for mean, max, and min temperature at Mt. Wilson No. 2
+# only add linear regressions if p-value < 0.05
+# R2 value 
+
+# Mean model (lm)
+meantemp_lm <- lm(mean ~ year, data = mtwilson_temp)
+summary(meantemp_lm)
+stargazer(meantemp_lm)
+# p-value: 1.179 x 10^-12 = Significant
+
+# Max model (lm)
+maxtemp_lm <- lm(max ~ year, data = mtwilson_temp)
+summary(maxtemp_lm)
+stargazer(maxtemp_lm)
+# p-value: 2.279 x 10^-14 = Significant
+
+# Min model (lm)
+mintemp_lm <- lm(min ~ year, data = mtwilson_temp)
+summary(mintemp_lm)
+stargazer(mintemp_lm)
+# p-value: 4.464 x 10^-7 = Significant
+
 ```
 
