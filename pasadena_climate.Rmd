@@ -42,3 +42,30 @@ pasadena_temp_graph <- ggplot(data=pasadena_temp, aes(x=year)) +
 pasadena_temp_graph
 ```
 
+
+```{r}
+# Statistics (linear regression (lm)) for mean, max, and min temperature in Pasadena
+
+## Mean model (lm)
+meantemp_lm <- lm(mean ~ year, data=pasadena_temp)
+summary(meantemp_lm)
+stargazer(meantemp_lm, type = "text")
+# p-value: < 2.2 x 10 ^-16 = Significant
+
+## Max model (lm)
+maxtemp_lm <- lm(max ~ year, data=pasadena_temp)
+summary(maxtemp_lm)
+stargazer(maxtemp_lm, type ="text")
+# p-value: < 2.2 x 10 ^-16 = Significant
+
+## Min model (lm)
+mintemp_lm <- lm(min ~ year, data=pasadena_temp)
+summary(mintemp_lm)
+stargazer(mintemp_lm, type = "text")
+# p-value: < 2.2 x 10 ^-16 = Significant
+
+```
+
+
+
+
