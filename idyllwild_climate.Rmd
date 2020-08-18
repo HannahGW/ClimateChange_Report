@@ -23,7 +23,9 @@ library(stargazer)
 # Idyllwild Temperature: 1946-2019
 # Number of Missing Years: 3
 
-idyllwild_temp <- read_csv("idyllwild_temp.csv") %>%
+idyllwild_temp <- read_csv(here::here("csv_files",
+                                      "temperature",
+                                      "idyllwild_temp.csv")) %>%
   clean_names()
 
 # Create graph of averages (mean, max, and min)
@@ -78,9 +80,12 @@ stargazer(mintemp_lm, type = "text")
 # Number of Missing Years: 5
 
 # Read in .csv file
-idyllwild_precip <- read_csv("idyllwild_precip.csv") %>%
+idyllwild_precip <- read_csv(here::here("csv_files",
+                                        "precipitation",
+                                        "idyllwild_precip.csv")) %>%
   clean_names()
-
+                      
+ 
 # Graph of Precipitation (annual - inches)
 
 idyllwild_precip_graph <- ggplot(data=idyllwild_precip, aes(x=years, y=annual_total)) +
@@ -115,7 +120,10 @@ idyllwild_precip_cv_graph
 # Number of Years missing: 13
 
 # Read in csv file
-idyllwild_snowfall <- read_csv("idyllwild_snowfall.csv")
+idyllwild_snowfall <- read_csv(here::here("csv_files",
+                                          "snowfall",
+                                          "idyllwild_snowfall.csv"))
+
 
 # Graph of Snowfall - need to edit the raw data so that the years are not continuous.
 
