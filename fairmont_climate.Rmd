@@ -24,7 +24,9 @@ library(stargazer)
 ### Fairmont Temperature: 1912-2019
 ### Number of Missing Years: 13
 
-fairmont_temp <- read_csv("Fairmont_temperature.csv") %>%
+fairmont_temp <- read_csv(here::here("csv_files",
+                                     "temperature",
+                                     "Fairmont_temperature.csv")) %>%
   clean_names()
 
 # Create graph of averages (mean, max, and min)
@@ -127,7 +129,9 @@ fairmont_meantemp_graph
 # Fairmont Precipitation: 1916-2019
 # Number of Years Missing: 20
 
-fairmont_precip <- read_csv("fairmont_precip.csv")
+fairmont_precip <- read_csv(here::here("csv_files",
+                                       "precipitation",
+                                       "fairmont_precip.csv"))
 
 fairmont_precip_graph <- ggplot(data=fairmont_precip, aes(x=year, y=annualgrowingseason)) +
   geom_line(color="blue") +
@@ -158,7 +162,9 @@ summary(fairmontprecip_lm)
 ```{r}
 # Fairmont Snowfall
 
-fairmont_snowfall <- read_csv("fairmont_snowfall.csv")
+fairmont_snowfall <- read_csv(here::here("csv_files",
+                                         "snowfall",
+                                         "fairmont_snowfall.csv"))
 
 # Graph of Snowfall - the year 1979 says 49 inches of snowfall, but the previous report doesn't have a datapoint that large...
 
