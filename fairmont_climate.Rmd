@@ -68,18 +68,27 @@ fairmont_temp_graph
 
 ## Mean model (lm)
 meantemp_lm <- lm(mean_f ~ year_s, data=fairmont_temp)
-# summary(meantemp_lm)
+summary(meantemp_lm)
 stargazer(meantemp_lm, type = "text")
+# Formula: mean = 0.024386*(year) + 12.723140
+# R^2: 0.1458 
+# p-value: p < 0.01 (USFS report has p<0.001)
 
 ## Max model (lm)
 maxtemp_lm <- lm(max_f ~ year_s, data=fairmont_temp)
-# summary(maxtemp_lm)
+summary(maxtemp_lm)
 stargazer(maxtemp_lm, type ="text")
+# Formula: max = 0.032428*(year) + 7.330187
+# R^2: 0.2008
+# p-value: p < 0.01
 
 ## Min model (lm)
 mintemp_lm <- lm(min_f ~ year_s, data=fairmont_temp)
-# summary(mintemp_lm)
+summary(mintemp_lm)
 stargazer(mintemp_lm, type = "text")
+# Formula: min = 0.015996*(year) + 18.780501
+# R^2: 0.058
+# p-value: p < 0.05
 
 ```
 
@@ -127,17 +136,55 @@ fairmont_precip_graph <- ggplot(data=fairmont_precip, aes(x=year, y=annualgrowin
   scale_x_continuous(limits=c(1915, 2020), breaks=seq(1915,2020,10), expand=c(0,1)) +
   # scale_y_continuous(limits=c(45,80), breaks=seq(45,80,5), expand=c(0,0)) +
   theme_minimal() +
-  theme(plot.title = element_text(hjust = 0.5))
+  theme(plot.title = element_text(hjust = 0.5)) +
+  ggsave(here::here("report_graphs",
+                    "precipitation",
+                    "fairmont_precipitation_graph.png"))
 
 fairmont_precip_graph
+```
+
+```{r}
+# Fairmont Statistics - Precipitation
+
+fairmontprecip_lm <- lm(annualgrowingseason ~ year, data=fairmont_precip)
+summary(fairmontprecip_lm)
+# p-value = 0.4188 Not Significant
+
 ```
 
 
 
 ```{r}
 # Fairmont Snowfall
+
+fairmont_snowfall <- read_csv("fairmont_snowfall.csv")
+
+# Graph of Snowfall - the year 1979 says 49 inches of snowfall, but the previous report doesn't have a datapoint that large...
+
+fairmont_snowfall_graph <- ggplot(data=fairmont_snowfall, aes(x=year, y=total)) +
+  geom_line(color="blue") +
+  geom_point(color="blue", size=1.5) +
+  labs(x="Years", y="Snowfall (inches)", title="Fairmont") +
+  scale_x_continuous(limits=c(1946, 2011), breaks=seq(1946,2011,10), expand=c(0,1)) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  ggsave(here::here("report_graphs",
+             "snowfall",
+             "Fairmont_Snowfall.png"))
+
+fairmont_snowfall_graph
+
 ```
 
+```{r}
+# Fairmont Snowfall Statistics
+
+fairmont_snowfall_lm <- lm(total ~ year, data=fairmont_snowfall)
+summary(fairmont_snowfall_lm)
+# p-value = 0.07512 NOT Significant
+
+```
 
 
 
