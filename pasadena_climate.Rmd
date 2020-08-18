@@ -22,7 +22,10 @@ library(here)
 # Pasadena Temperature: 1909-2019
 # Number of Missing Years: 0
 
-pasadena_temp <- read_csv("pasadena.csv")
+pasadena_temp <- read_csv(here::here("csv_files",
+                                     "temperature",
+                                     "pasadena.csv"))
+ 
 
 # Create graph of averages (mean, max, and min)
 

@@ -23,8 +23,11 @@ library(stargazer)
 # Mt. Wilson No. 2 Temperature: 1949-2017
 # Number of Missing Years: 3
 
-mtwilson_temp <- read_csv("mtwilsonno2.csv") %>%
+mtwilson_temp <- read_csv(here::here("csv_files",
+                                     "temperature",
+                                     "mtwilsonno2.csv")) %>%
   clean_names()
+
 
 # Create graph of averages (mean, max, and min)
 

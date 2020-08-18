@@ -22,7 +22,9 @@ library(here)
 # Palmdale Temperature: 1933-2019
 # Number of Missing Years: 0
 
-palmdale_temp <- read_csv("palmdale.csv") %>%
+palmdale_temp <- read_csv(here::here("csv_files",
+                                     "temperature",
+                                     "palmdale.csv")) %>%
   clean_names()
 
 # Create graph of averages (mean, max, and min)
