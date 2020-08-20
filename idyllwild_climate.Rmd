@@ -28,18 +28,36 @@ idyllwild_temp <- read_csv(here::here("csv_files",
                                       "idyllwild_temp.csv")) %>%
   clean_names()
 
+# ----------------------------------------
+
 # Create graph of averages (mean, max, and min)
 
-idyllwild_temp_graph <- ggplot(data=idyllwild_temp, aes(x=year)) +
-  geom_line(aes(y=mean), color="black") +
-  geom_line(aes(y=max), color="black") +
-  geom_line(aes(y=min), color="black") +
-  geom_point(aes(y=mean), color="black", pch=18, size=1.5) +
-  geom_point(aes(y=max), color="darkred", pch=15, size=1.5) +
-  geom_point(aes(y=min), color="gold", pch=17, size=1.5) +
-  labs(x="Year", y="Degrees Farenheit", title="Idyllwild") +
-  scale_x_continuous(limits=c(1945, 2020), breaks=seq(1945,2020,10), expand=c(0,1)) +
-  scale_y_continuous(limits=c(30,75), breaks=seq(30,75,5), expand=c(0,0)) +
+idyllwild_temp_graph <- ggplot(data=idyllwild_temp,
+                               aes(x=year)) +
+  geom_line(aes(y=mean),
+            color="black") +
+  geom_line(aes(y=max),
+            color="black") +
+  geom_line(aes(y=min),
+            color="black") +
+  geom_point(aes(y=mean),
+             color="black",
+             pch=18, size=1.5) +
+  geom_point(aes(y=max),
+             color="darkred",
+             pch=15, size=1.5) +
+  geom_point(aes(y=min), 
+             color="gold", 
+             pch=17, size=1.5) +
+  labs(x="Year", 
+       y="Degrees Farenheit", 
+       title="Idyllwild") +
+  scale_x_continuous(limits=c(1945, 2020), 
+                     breaks=seq(1945,2020,10), 
+                     expand=c(0,1)) +
+  scale_y_continuous(limits=c(30,75), 
+                     breaks=seq(30,75,5), 
+                     expand=c(0,0)) +
   theme_minimal() +
   theme(plot.title = element_text(hjust = 0.5))
 
@@ -57,19 +75,19 @@ idyllwild_temp_graph
 ## Mean model (lm)
 meantemp_lm <- lm(mean ~ year, data=idyllwild_temp)
 summary(meantemp_lm)
-stargazer(meantemp_lm, type = "text")
+# stargazer(meantemp_lm, type = "text")
 # p-value: 2.678x10^-09 = Significant
 
 ## Max model (lm)
 maxtemp_lm <- lm(max ~ year, data=idyllwild_temp)
 summary(maxtemp_lm)
-stargazer(maxtemp_lm, type = "text")
+# stargazer(maxtemp_lm, type = "text")
 # p-value: 0.6608 = NOT Significant
 
 ## Min model (lm)
 mintemp_lm <- lm(min ~ year, data=idyllwild_temp)
 summary(mintemp_lm)
-stargazer(mintemp_lm, type = "text")
+# stargazer(mintemp_lm, type = "text")
 # p-value: < 2.2x10^-16 = Significant
 
 ```
@@ -85,17 +103,34 @@ idyllwild_precip <- read_csv(here::here("csv_files",
                                         "idyllwild_precip.csv")) %>%
   clean_names()
                       
- 
+# -----------------------------------
+
+# Statistics for Idyllwild Precipitation (Used growing season instead of total)
+
+idyllwildprecip_lm <- lm(annual_growingseason ~ years, data=idyllwild_precip)
+summary(idyllwildprecip_lm)
+# p-value: 0.9986 = NOT Significant
+
+# -----------------------------------
+
 # Graph of Precipitation (annual - inches)
 
-idyllwild_precip_graph <- ggplot(data=idyllwild_precip, aes(x=years, y=annual_total)) +
+idyllwild_precip_graph <- ggplot(data=idyllwild_precip, 
+                                 aes(x=years, 
+                                     y=annual_total)) +
   geom_point(pch=18, color="blue") +
   geom_line(color="blue") +
   theme_minimal() +
-  labs(title= "Idyllwild", x= "Water Year", y= "Annual Precipitation (inches)") +
+  labs(title= "Idyllwild",
+       x= "Water Year", 
+       y= "Annual Precipitation (inches)") +
   theme(plot.title = element_text(hjust = 0.5)) +
-  scale_x_continuous(limits=c(1945, 2020), breaks=seq(1945,2020,10), expand=c(0,1)) +
-  scale_y_continuous(limits=c(10,60), breaks=seq(10,60,10), expand=c(0,0))
+  scale_x_continuous(limits=c(1945, 2020), 
+                     breaks=seq(1945,2020,10), 
+                     expand=c(0,1)) +
+  scale_y_continuous(limits=c(10,60), 
+                     breaks=seq(10,60,10), 
+                     expand=c(0,0))
 
 idyllwild_precip_graph
 ```
@@ -104,13 +139,19 @@ idyllwild_precip_graph
 # Graph of 5-yr CV for Idyllwild Precipitation
 # Previous report did not graph 5-yr CV for Idyllwild...
 
-idyllwild_precip_cv_graph <- ggplot(data=idyllwild_precip, aes(x=years, y=x5yr_cv)) +
+idyllwild_precip_cv_graph <- ggplot(data=idyllwild_precip, 
+                                    aes(x=years, 
+                                        y=x5yr_cv)) +
   geom_point(pch=18, color="blue") +
   geom_line(color="blue") +
   theme_minimal() +
-  labs(title= "Idyllwild", x= "Water Year", y= "5-Yr CV Annual Precipitation") +
+  labs(title= "Idyllwild",
+       x= "Water Year", 
+       y= "5-Yr CV Annual Precipitation") +
   theme(plot.title = element_text(hjust = 0.5)) +
-  scale_x_continuous(limits=c(1945, 2020), breaks=seq(1945,2020,10), expand=c(0,1))
+  scale_x_continuous(limits=c(1945, 2020), 
+                     breaks=seq(1945,2020,10), 
+                     expand=c(0,1))
 
 idyllwild_precip_cv_graph
 ```
@@ -124,14 +165,28 @@ idyllwild_snowfall <- read_csv(here::here("csv_files",
                                           "snowfall",
                                           "idyllwild_snowfall.csv"))
 
+# ------------------------------------
+
+# Statistics for Idyllwild Snowfall 
+
+idyllwildsnow_lm <- lm(annual ~ years, data=idyllwild_snowfall)
+summary(idyllwildsnow_lm)
+
+# p-value: 0.0867 = NOT Significant
+
+# --------------------------------------
 
 # Graph of Snowfall - need to edit the raw data so that the years are not continuous.
 
-idyllwild_snowfall_graph <- ggplot(data=idyllwild_snowfall, aes(x=years, y=annual)) +
+idyllwild_snowfall_graph <- ggplot(data=idyllwild_snowfall,
+                                   aes(x=years,
+                                       y=annual)) +
   geom_point(pch=18, color="blue") +
   geom_line(color="blue") +
   theme_minimal() +
-  labs(title= "Idyllwild", x= "Water Year", y= "Annual Snowfall (inches)") +
+  labs(title= "Idyllwild", 
+       x= "Water Year",
+       y= "Annual Snowfall (inches)") +
   theme(plot.title = element_text(hjust = 0.5))
 
 idyllwild_snowfall_graph

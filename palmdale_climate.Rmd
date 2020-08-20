@@ -27,18 +27,36 @@ palmdale_temp <- read_csv(here::here("csv_files",
                                      "palmdale.csv")) %>%
   clean_names()
 
+# ----------------------------------------
+
 # Create graph of averages (mean, max, and min)
 
-palmdale_temp_graph <- ggplot(data=palmdale_temp, aes(x=year)) +
-  geom_line(aes(y=mean), color="black") +
-  geom_line(aes(y=max), color="black") +
-  geom_line(aes(y=min), color="black") +
-  geom_point(aes(y=mean), color="black", pch=18, size=1.5) +
-  geom_point(aes(y=max), color="darkred", pch=15, size=1.5) +
-  geom_point(aes(y=min), color="gold", pch=17, size=1.5) +
-  labs(x="Year", y="Degrees Farenheit", title="Palmdale") +
-  scale_x_continuous(limits=c(1933, 2020), breaks=seq(1933,2020,10), expand=c(0,1)) +
-  scale_y_continuous(limits=c(40,85), breaks=seq(40,85,5), expand=c(0,0)) +
+palmdale_temp_graph <- ggplot(data=palmdale_temp, 
+                              aes(x=year)) +
+  geom_line(aes(y=mean), 
+            color="black") +
+  geom_line(aes(y=max),
+            color="black") +
+  geom_line(aes(y=min), 
+            color="black") +
+  geom_point(aes(y=mean), 
+             color="black", 
+             pch=18, size=1.5) +
+  geom_point(aes(y=max), 
+             color="darkred",
+             pch=15, size=1.5) +
+  geom_point(aes(y=min), 
+             color="gold", 
+             pch=17, size=1.5) +
+  labs(x="Year", 
+       y="Degrees Farenheit",
+       title="Palmdale") +
+  scale_x_continuous(limits=c(1933, 2020), 
+                     breaks=seq(1933,2020,10), 
+                     expand=c(0,1)) +
+  scale_y_continuous(limits=c(40,85), 
+                     breaks=seq(40,85,5), 
+                     expand=c(0,0)) +
   theme_minimal() +
   theme(plot.title = element_text(hjust = 0.5))
 
@@ -68,4 +86,93 @@ stargazer(mintemp_lm, type = "text")
 ```
 
 
+```{r}
+# Palmdale Precipitation
+
+# read in csv
+
+palmdale_precip <- read_csv(here::here("csv_files",
+                                       "precipitation",
+                                       "palmdale_precip.csv"))
+
+#------------------------------------
+
+# Statistics for Palmdale Precipitation
+
+palmdaleprecip_lm <- lm(annualgrowingseason ~ year, data = palmdale_precip)
+summary(palmdaleprecip_lm)
+# p-value: 0.2836 - NOT Significant
+
+# -------------------------------------
+
+# Palmdale Precipitation Graph
+
+palmdale_precip_graph <- ggplot(data=palmdale_precip,
+                                aes(x=year,
+                                    y=annualgrowingseason)) +
+  theme_minimal() +
+  geom_point(color = "blue") +
+  geom_line(color = "blue") + 
+  labs(x="Year",
+       y="Precipitation (inches)",
+       title="Palmdale") +
+  scale_x_continuous(limits=c(1945, 2020),
+                     breaks=seq(1945,2020,10),
+                     expand=c(0,1)) +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  ggsave(here::here("report_graphs",
+                    "precipitation",
+                    "palmdale_precip_graph.png"))
+
+palmdale_precip_graph
+
+```
+
+```{r}
+# Palmdale Snowfall
+
+# read in csv
+
+palmdale_snow <- read_csv(here::here("csv_files",
+                                     "snowfall",
+                                     "palmdale_snowfall.csv"))
+
+# ----------------------------------
+
+# Statistics for Palmdale Snowfall
+
+palmdalesnow_lm <- lm(total ~ year, data=palmdale_snow)
+summary(palmdalesnow_lm)
+# p-value: 0.03602 - Significant
+
+# -----------------------------------
+
+# Graph for Palmdale Snow
+
+palmdalesnow_graph <- ggplot(data=palmdale_snow,
+                                aes(x=year,
+                                    y=total)) +
+  theme_minimal() +
+  geom_point(color = "blue") +
+  geom_line(color = "blue") + 
+  labs(x="Year",
+       y="Snowfall (inches)",
+       title="Palmdale") +
+  scale_x_continuous(limits=c(1945, 2020),
+                     breaks=seq(1945,2020,10),
+                     expand=c(0,1)) +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  geom_smooth(method='lm',
+              formula= y~x,
+              se=FALSE,
+              color= "black",
+              size=0.5) +
+  ggpubr::stat_regline_equation(aes(y=total,
+                                    x=year),
+                                output.type = "expression",
+                                label.x = 1995,
+                                label.y = 15) # still need to add R2 and p-value to graph
+
+palmdalesnow_graph
+```
 

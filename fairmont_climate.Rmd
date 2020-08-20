@@ -29,37 +29,43 @@ fairmont_temp <- read_csv(here::here("csv_files",
                                      "Fairmont_temperature.csv")) %>%
   clean_names()
 
+# -----------------------------------------
+
 # Create graph of averages (mean, max, and min)
 
-fairmont_temp_graph <- ggplot(data=fairmont_temp, aes(x=year_s)) +
-  geom_line(aes(y=mean_f), color="black") +
-  geom_line(aes(y=max_f), color="black") +
-  geom_line(aes(y=min_f), color="black") +
-  geom_point(aes(y=mean_f), color="black", pch=18, size=1.5) +
-  geom_point(aes(y=max_f), color="darkred", pch=15, size=1.5) +
-  geom_point(aes(y=min_f), color="gold", pch=17, size=1.5) +
-  labs(x="Years", y="Degrees Farenheit", title="Fairmont") +
-  scale_x_continuous(limits=c(1920, 2020), breaks=seq(1920,2020,10), expand=c(0,1)) +
-  scale_y_continuous(limits=c(45,80), breaks=seq(45,80,5), expand=c(0,0)) +
+fairmont_temp_graph <- ggplot(data=fairmont_temp,
+                              aes(x=year_s)) +
+  geom_line(aes(y=mean_f),
+            color="black") +
+  geom_line(aes(y=max_f),
+            color="black") +
+  geom_line(aes(y=min_f),
+            color="black") +
+  geom_point(aes(y=mean_f),
+             color="black",
+             pch=18,
+             size=1.5) +
+  geom_point(aes(y=max_f),
+             color="darkred",
+             pch=15,
+             size=1.5) +
+  geom_point(aes(y=min_f),
+             color="gold",
+             pch=17,
+             size=1.5) +
+  labs(x="Years", 
+       y="Degrees Farenheit",
+       title="Fairmont") +
+  scale_x_continuous(limits=c(1920, 2020),
+                     breaks=seq(1920,2020,10),
+                     expand=c(0,1)) +
+  scale_y_continuous(limits=c(45,80),
+                     breaks=seq(45,80,5),
+                     expand=c(0,0)) +
   theme_minimal() +
   theme(plot.title = element_text(hjust = 0.5))
 
 # ggpubr::stat_regline_equation(aes(y=mean_f,x=year_s), output.type = "expression") 
-
-# stat_regline_equation(
-#   mapping = NULL,
-#   data = NULL,
-#   formula = y ~ x,
-#   label.x.npc = "left",
-#   label.y.npc = "top",
-#   label.x = NULL,
-#   label.y = NULL,
-#   output.type = "expression",
-#   geom = "text",
-#   position = "identity",
-#   na.rm = FALSE,
-#   show.legend = NA,
-#   inherit.aes = TRUE,
 
 fairmont_temp_graph
 
@@ -74,7 +80,7 @@ summary(meantemp_lm)
 stargazer(meantemp_lm, type = "text")
 # Formula: mean = 0.024386*(year) + 12.723140
 # R^2: 0.1458 
-# p-value: p < 0.01 (USFS report has p<0.001)
+# p-value: p < 0.01 (USFS report has p<0.001) Significant
 
 ## Max model (lm)
 maxtemp_lm <- lm(max_f ~ year_s, data=fairmont_temp)
@@ -82,7 +88,7 @@ summary(maxtemp_lm)
 stargazer(maxtemp_lm, type ="text")
 # Formula: max = 0.032428*(year) + 7.330187
 # R^2: 0.2008
-# p-value: p < 0.01
+# p-value: p < 0.01 Significant
 
 ## Min model (lm)
 mintemp_lm <- lm(min_f ~ year_s, data=fairmont_temp)
@@ -90,7 +96,7 @@ summary(mintemp_lm)
 stargazer(mintemp_lm, type = "text")
 # Formula: min = 0.015996*(year) + 18.780501
 # R^2: 0.058
-# p-value: p < 0.05
+# p-value: p < 0.05 Significant
 
 ```
 
@@ -99,25 +105,30 @@ stargazer(mintemp_lm, type = "text")
 # Graph of just one line + statistics (Test)
 # Fairmont mean temperature
 
-fairmont_meantemp_graph <- ggplot(data=fairmont_temp, aes(x=year_s, y=mean_f)) +
+fairmont_meantemp_graph <- ggplot(data=fairmont_temp,
+                                  aes(x=year_s,
+                                      y=mean_f)) +
   geom_line(color="black") +
-  geom_point(color="black", pch=18, size=1.5) +
-  scale_x_continuous(limits=c(1920, 2020), breaks=seq(1920,2020,10), expand=c(0,1)) +
-  scale_y_continuous(limits=c(45,80), breaks=seq(45,80,5), expand=c(0,0)) +
+  geom_point(color="black",
+             pch=18,
+             size=1.5) +
+  scale_x_continuous(limits=c(1920, 2020),
+                     breaks=seq(1920,2020,10),
+                     expand=c(0,1)) +
+  scale_y_continuous(limits=c(45,80),
+                     breaks=seq(45,80,5),
+                     expand=c(0,0)) +
   theme_minimal() +
-  theme(plot.title = element_text(hjust = 0.5))
+  theme(plot.title = element_text(hjust = 0.5)) +
+  geom_smooth(method='lm',
+              formula= y~x,
+              se=FALSE,
+              color= "black",
+              size=0.5) +
+  ggpubr::stat_regline_equation(aes(y=mean_f,
+                                    x=year_s),
+                                output.type = "expression")
 
-  # ggpubr::stat_regline_equation(mapping = NULL, 
-  #                               data = NULL,
-  #                               formula = y ~ x, 
-  #                               label.x.npc = "left",
-  #                               label.y.npc = "top",
-  #                               output.type = "expression",
-  #                               geom = "text",
-  #                               position = "identity",
-  #                               na.rm = FALSE,
-  #                               show.legend = NA,
-  #                               inherit.aes = TRUE)
 
 fairmont_meantemp_graph
 
@@ -133,12 +144,30 @@ fairmont_precip <- read_csv(here::here("csv_files",
                                        "precipitation",
                                        "fairmont_precip.csv"))
 
-fairmont_precip_graph <- ggplot(data=fairmont_precip, aes(x=year, y=annualgrowingseason)) +
+# --------------------------------------
+
+# Fairmont Statistics - Precipitation
+
+fairmontprecip_lm <- lm(annualgrowingseason ~ year, data=fairmont_precip)
+summary(fairmontprecip_lm)
+
+# p-value = 0.4188 Not Significant
+
+# ----------------------------------------
+
+fairmont_precip_graph <- ggplot(data=fairmont_precip,
+                                aes(x=year,
+                                    y=annualgrowingseason)) +
   geom_line(color="blue") +
-  geom_point(color="blue", pch=18, size=1.5) +
-  labs(x="Water Year", y="Annual Precipitation (inches)", title="Fairmont") +
-  scale_x_continuous(limits=c(1915, 2020), breaks=seq(1915,2020,10), expand=c(0,1)) +
-  # scale_y_continuous(limits=c(45,80), breaks=seq(45,80,5), expand=c(0,0)) +
+  geom_point(color="blue",
+             pch=18,
+             size=1.5) +
+  labs(x="Water Year",
+       y="Annual Precipitation (inches)",
+       title="Fairmont") +
+  scale_x_continuous(limits=c(1915, 2020),
+                     breaks=seq(1915,2020,10),
+                     expand=c(0,1)) +
   theme_minimal() +
   theme(plot.title = element_text(hjust = 0.5)) +
   ggsave(here::here("report_graphs",
@@ -146,15 +175,6 @@ fairmont_precip_graph <- ggplot(data=fairmont_precip, aes(x=year, y=annualgrowin
                     "fairmont_precipitation_graph.png"))
 
 fairmont_precip_graph
-```
-
-```{r}
-# Fairmont Statistics - Precipitation
-
-fairmontprecip_lm <- lm(annualgrowingseason ~ year, data=fairmont_precip)
-summary(fairmontprecip_lm)
-# p-value = 0.4188 Not Significant
-
 ```
 
 
@@ -165,14 +185,31 @@ summary(fairmontprecip_lm)
 fairmont_snowfall <- read_csv(here::here("csv_files",
                                          "snowfall",
                                          "fairmont_snowfall.csv"))
+# ---------------------------------
+
+# Fairmont Snowfall Statistics
+
+fairmont_snowfall_lm <- lm(total ~ year, data=fairmont_snowfall)
+summary(fairmont_snowfall_lm)
+
+# p-value = 0.07512 NOT Significant
+
+# --------------------------------
 
 # Graph of Snowfall - the year 1979 says 49 inches of snowfall, but the previous report doesn't have a datapoint that large...
 
-fairmont_snowfall_graph <- ggplot(data=fairmont_snowfall, aes(x=year, y=total)) +
+fairmont_snowfall_graph <- ggplot(data=fairmont_snowfall,
+                                  aes(x=year,
+                                      y=total)) +
   geom_line(color="blue") +
-  geom_point(color="blue", size=1.5) +
-  labs(x="Years", y="Snowfall (inches)", title="Fairmont") +
-  scale_x_continuous(limits=c(1946, 2011), breaks=seq(1946,2011,10), expand=c(0,1)) +
+  geom_point(color="blue",
+             size=1.5) +
+  labs(x="Year",
+       y="Snowfall (inches)",
+       title="Fairmont") +
+  scale_x_continuous(limits=c(1946, 2011),
+                     breaks=seq(1946,2011,10),
+                     expand=c(0,1)) +
   theme_minimal() +
   theme(plot.title = element_text(hjust = 0.5)) +
   ggsave(here::here("report_graphs",
@@ -182,15 +219,5 @@ fairmont_snowfall_graph <- ggplot(data=fairmont_snowfall, aes(x=year, y=total)) 
 fairmont_snowfall_graph
 
 ```
-
-```{r}
-# Fairmont Snowfall Statistics
-
-fairmont_snowfall_lm <- lm(total ~ year, data=fairmont_snowfall)
-summary(fairmont_snowfall_lm)
-# p-value = 0.07512 NOT Significant
-
-```
-
 
 
