@@ -94,8 +94,8 @@ pasadena_precip_graph <- ggplot(data=pasadena_precip,
   theme_minimal() +
   geom_point(color = "blue") +
   geom_line(color = "blue") + 
-  labs(x="Year",
-       y="Annual Growing Season (precip - inches)",
+  labs(x="Growing Season (Year)",
+       y="Precipitation (inches)",
        title="Pasadena") +
   scale_x_continuous(limits=c(1945, 2020),
                      breaks=seq(1945,2020,10),

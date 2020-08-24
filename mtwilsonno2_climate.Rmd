@@ -86,7 +86,6 @@ summary(mtwilsonprecip_lm)
 # p-value: 0.5732 - NOT Significant
 
 # ---------------------------------------------------
-
 # Graph Mt. Wilson No. 2 Precipitation
 
 mtwilson_precip_graph <- ggplot(data=mtwilson_precip,
@@ -95,7 +94,7 @@ mtwilson_precip_graph <- ggplot(data=mtwilson_precip,
   theme_minimal() +
   geom_point(color = "blue") +
   geom_line(color = "blue") + 
-  labs(x="Year",
+  labs(x="Growing Season (year)",
        y="Precipitation (inches)",
        title="Mt. Wilson No. 2") +
   scale_x_continuous(limits=c(1945, 2020),
@@ -125,7 +124,7 @@ mtwilson_snowfall <- read_csv(here::here("csv_files",
 mtwilsonsnowfall_lm <- lm(total ~ year, data=mtwilson_snowfall)
 summary(mtwilsonsnowfall_lm)
 
-# p-value: 0.0001138 (p < 0.001) Significant (should probably graph the trendline?)
+# p-value: 0.0001138 (p < 0.001) Significant
 
 # -------------------------------------
 
@@ -149,16 +148,16 @@ mtwilson_snowfall_graph <- ggplot(data=mtwilson_snowfall,
               se=FALSE,
               color= "black",
               size=0.5) +
-  ggpubr::stat_regline_equation(aes(y=total,
-                                    x=year),
-                                output.type = "expression") +
+  annotate("text", x = 2005, y = 80, label = "p-value < 0.001, slope = -0.7182") +
   ggsave(here::here("report_graphs",
                     "snowfall",
                     "mtwilson_snowfall_graph.png"))
-
-# Still need to add R and P value on graph? maybe read through this website: https://lukemiller.org/index.php/2012/10/adding-p-values-and-r-squared-values-to-a-plot-using-expression/
   
-mtwilson_snowfall_graph # graph is non-functional, do not include on report?
+mtwilson_snowfall_graph
+
+  # ggpubr::stat_regline_equation(aes(y=total,
+  #                                   x=year),
+  #                               output.type = "expression") <- this is another option to add the equation to the graph
 
 ```
 

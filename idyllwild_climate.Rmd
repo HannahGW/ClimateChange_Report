@@ -28,8 +28,28 @@ idyllwild_temp <- read_csv(here::here("csv_files",
                                       "idyllwild_temp.csv")) %>%
   clean_names()
 
-# ----------------------------------------
+# ------------------------------------------
+# Statistics (linear regression (lm)) for mean, max, and min temperature in Idyllwild
 
+## Mean model (lm)
+meantemp_lm <- lm(mean ~ year, data=idyllwild_temp)
+summary(meantemp_lm)
+# stargazer(meantemp_lm, type = "text")
+# p-value: 2.678x10^-09 = Significant
+
+## Max model (lm)
+maxtemp_lm <- lm(max ~ year, data=idyllwild_temp)
+summary(maxtemp_lm)
+# stargazer(maxtemp_lm, type = "text")
+# p-value: 0.6608 = NOT Significant
+
+## Min model (lm)
+mintemp_lm <- lm(min ~ year, data=idyllwild_temp)
+summary(mintemp_lm)
+# stargazer(mintemp_lm, type = "text")
+# p-value: < 2.2x10^-16 = Significant
+
+# ----------------------------------------
 # Create graph of averages (mean, max, and min)
 
 idyllwild_temp_graph <- ggplot(data=idyllwild_temp,
@@ -67,30 +87,6 @@ idyllwild_temp_graph <- ggplot(data=idyllwild_temp,
 idyllwild_temp_graph
 ```
 
-```{r}
-# Statistics (linear regression (lm)) for mean, max, and min temperature in Idyllwild
-# only add linear regressions if p-value < 0.05
-# R2 value 
-
-## Mean model (lm)
-meantemp_lm <- lm(mean ~ year, data=idyllwild_temp)
-summary(meantemp_lm)
-# stargazer(meantemp_lm, type = "text")
-# p-value: 2.678x10^-09 = Significant
-
-## Max model (lm)
-maxtemp_lm <- lm(max ~ year, data=idyllwild_temp)
-summary(maxtemp_lm)
-# stargazer(maxtemp_lm, type = "text")
-# p-value: 0.6608 = NOT Significant
-
-## Min model (lm)
-mintemp_lm <- lm(min ~ year, data=idyllwild_temp)
-summary(mintemp_lm)
-# stargazer(mintemp_lm, type = "text")
-# p-value: < 2.2x10^-16 = Significant
-
-```
 
 
 ```{r}
@@ -117,20 +113,23 @@ summary(idyllwildprecip_lm)
 
 idyllwild_precip_graph <- ggplot(data=idyllwild_precip, 
                                  aes(x=years, 
-                                     y=annual_total)) +
+                                     y=annual_growingseason)) +
   geom_point(pch=18, color="blue") +
   geom_line(color="blue") +
   theme_minimal() +
   labs(title= "Idyllwild",
-       x= "Water Year", 
-       y= "Annual Precipitation (inches)") +
+       x= "Growing Season (year)", 
+       y= "Precipitation (inches)") +
   theme(plot.title = element_text(hjust = 0.5)) +
   scale_x_continuous(limits=c(1945, 2020), 
                      breaks=seq(1945,2020,10), 
                      expand=c(0,1)) +
   scale_y_continuous(limits=c(10,60), 
                      breaks=seq(10,60,10), 
-                     expand=c(0,0))
+                     expand=c(0,0)) +
+  ggsave(here::here("report_graphs",
+                    "precipitation",
+                    "idyllwild_precip_graph.png"))
 
 idyllwild_precip_graph
 ```
@@ -186,8 +185,11 @@ idyllwild_snowfall_graph <- ggplot(data=idyllwild_snowfall,
   theme_minimal() +
   labs(title= "Idyllwild", 
        x= "Water Year",
-       y= "Annual Snowfall (inches)") +
-  theme(plot.title = element_text(hjust = 0.5))
+       y= "Snowfall (inches)") +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  ggsave(here::here("report_graphs",
+                    "snowfall",
+                    "idyllwild_snowfall_graph.png"))
 
 idyllwild_snowfall_graph
 ```

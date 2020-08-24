@@ -150,7 +150,6 @@ fairmont_precip <- read_csv(here::here("csv_files",
 
 fairmontprecip_lm <- lm(annualgrowingseason ~ year, data=fairmont_precip)
 summary(fairmontprecip_lm)
-
 # p-value = 0.4188 Not Significant
 
 # ----------------------------------------
@@ -162,8 +161,8 @@ fairmont_precip_graph <- ggplot(data=fairmont_precip,
   geom_point(color="blue",
              pch=18,
              size=1.5) +
-  labs(x="Water Year",
-       y="Annual Precipitation (inches)",
+  labs(x="Growing Season (year)",
+       y="Precipitation (inches)",
        title="Fairmont") +
   scale_x_continuous(limits=c(1915, 2020),
                      breaks=seq(1915,2020,10),

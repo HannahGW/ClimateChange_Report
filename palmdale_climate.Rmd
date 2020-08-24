@@ -28,6 +28,24 @@ palmdale_temp <- read_csv(here::here("csv_files",
   clean_names()
 
 # ----------------------------------------
+# Statistics (linear regression (lm)) for mean, max, and min temperature in Palmdale
+
+## Mean model (lm)
+meantemp_lm <- lm(mean ~ year, data=palmdale_temp)
+summary(meantemp_lm)
+# p-value: 7.465e-10 = Significant
+
+## Max model (lm)
+maxtemp_lm <- lm(max ~ year, data=palmdale_temp)
+summary(maxtemp_lm)
+# p-value: 4.081e-06 = Significant
+
+## Min model (lm)
+mintemp_lm <- lm(min ~ year, data=palmdale_temp)
+summary(mintemp_lm)
+# p-value: 8.845e-11 = Significant
+
+# ------------------------------------------
 
 # Create graph of averages (mean, max, and min)
 
@@ -63,28 +81,6 @@ palmdale_temp_graph <- ggplot(data=palmdale_temp,
 palmdale_temp_graph
 ```
 
-```{r}
-# Statistics (linear regression (lm)) for mean, max, and min temperature in Palmdale
-
-## Mean model (lm)
-meantemp_lm <- lm(mean ~ year, data=palmdale_temp)
-summary(meantemp_lm)
-# stargazer(meantemp_lm, type = "text")
-# p-value: 7.465e-10 = Significant
-
-## Max model (lm)
-maxtemp_lm <- lm(max ~ year, data=palmdale_temp)
-summary(maxtemp_lm)
-# stargazer(maxtemp_lm, type ="text")
-# p-value: 4.081e-06 = Significant
-
-## Min model (lm)
-mintemp_lm <- lm(min ~ year, data=palmdale_temp)
-summary(mintemp_lm)
-# stargazer(mintemp_lm, type = "text")
-# p-value: 8.845e-11 = Significant
-```
-
 
 ```{r}
 # Palmdale Precipitation
@@ -113,7 +109,7 @@ palmdale_precip_graph <- ggplot(data=palmdale_precip,
   theme_minimal() +
   geom_point(color = "blue") +
   geom_line(color = "blue") + 
-  labs(x="Year",
+  labs(x="Growing Season (year)",
        y="Precipitation (inches)",
        title="Palmdale") +
   scale_x_continuous(limits=c(1945, 2020),
@@ -167,11 +163,11 @@ palmdalesnow_graph <- ggplot(data=palmdale_snow,
               se=FALSE,
               color= "black",
               size=0.5) +
-  ggpubr::stat_regline_equation(aes(y=total,
-                                    x=year),
-                                output.type = "expression",
-                                label.x = 1995,
-                                label.y = 15) # still need to add R2 and p-value to graph
+  annotate("text", x = 2005, y = 17.5, label = "p-value = 0.03602, slope = -0.04014") +
+  ggsave(here::here("report_graphs",
+                    "snowfall",
+                    "palmdale_snowfall_graph.png"))
+# The annotate codeline is not reproducible, meaning you will have to manually enter the p-value and slope to the graph
 
 palmdalesnow_graph
 ```
