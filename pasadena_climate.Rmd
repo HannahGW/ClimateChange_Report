@@ -25,28 +25,8 @@ library(here)
 pasadena_temp <- read_csv(here::here("csv_files",
                                      "temperature",
                                      "pasadena.csv"))
- 
 
-# Create graph of averages (mean, max, and min)
-
-pasadena_temp_graph <- ggplot(data=pasadena_temp, aes(x=year)) +
-  geom_line(aes(y=mean), color="black") +
-  geom_line(aes(y=max), color="black") +
-  geom_line(aes(y=min), color="black") +
-  geom_point(aes(y=mean), color="black", pch=18, size=1.5) +
-  geom_point(aes(y=max), color="darkred", pch=15, size=1.5) +
-  geom_point(aes(y=min), color="gold", pch=17, size=1.5) +
-  labs(x="Year", y="Degrees Farenheit", title="Pasadena") +
-  scale_x_continuous(limits=c(1908, 2020), breaks=seq(1908,2020,10), expand=c(0,1)) +
-  scale_y_continuous(limits=c(45,85), breaks=seq(45,85,5), expand=c(0,0)) +
-  theme_minimal() +
-  theme(plot.title = element_text(hjust = 0.5))
-
-pasadena_temp_graph
-```
-
-
-```{r}
+# -----------------------------------
 # Statistics (linear regression (lm)) for mean, max, and min temperature in Pasadena
 
 ## Mean model (lm)
@@ -66,7 +46,39 @@ mintemp_lm <- lm(min ~ year, data=pasadena_temp)
 summary(mintemp_lm)
 # stargazer(mintemp_lm, type = "text")
 # p-value: < 2.2 x 10 ^-16 = Significant
+ 
+#------------------------------------
+# Create graph of averages (mean, max, and min)
 
+pasadena_temp_graph <- ggplot(data=pasadena_temp, aes(x=year)) +
+  geom_line(aes(y=mean), 
+            color="black") +
+  geom_line(aes(y=max), 
+            color="black") +
+  geom_line(aes(y=min), 
+            color="black") +
+  geom_point(aes(y=mean), 
+             color="black", 
+             pch=18, size=1.5) +
+  geom_point(aes(y=max), 
+             color="darkred",
+             pch=15, size=1.5) +
+  geom_point(aes(y=min), 
+             color="gold", 
+             pch=17, size=1.5) +
+  labs(x="Year",
+       y="Degrees Farenheit", 
+       title="Pasadena") +
+  scale_x_continuous(limits=c(1908, 2020), 
+                     breaks=seq(1908,2020,10), 
+                     expand=c(0,1)) +
+  scale_y_continuous(limits=c(45,85), 
+                     breaks=seq(45,85,5), 
+                     expand=c(0,0)) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5))
+
+pasadena_temp_graph
 ```
 
 
@@ -109,4 +121,47 @@ pasadena_precip_graph
 
 ```
 
+```{r}
+## Pasadena 5-yr CV precipitation 
+
+# --------------------------------
+# Statistics for 5-yr cv
+
+pasadena_5yr_lm <- lm(x5yr_cv ~ year, data=pasadena_precip)
+summary(pasadena_5yr_lm)
+# p-value: 1.106e-06 (p-value < 0.001) - Significant
+# equation: CV = 0.0022*(year) - 3.97931
+# Adjusted R2 = 0.2139
+
+# --------------------------------
+# Graph of Pasadena 5-yr CV precipitation
+
+pasadena_5yr_graph <- ggplot(data=pasadena_precip,
+                                aes(x = year,
+                                    y = x5yr_cv)) +
+  theme_minimal() +
+  geom_point(color = "blue") +
+  geom_line(color = "blue") + 
+  labs(x="Growing Season (year)",
+       y="5 yr CV in annual growing season precipitation",
+       title="Pasadena") +
+  scale_x_continuous(limits=c(1905, 2022),
+                     breaks=seq(1905,2022,10),
+                     expand=c(0,1)) +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  geom_smooth(method='lm',
+              formula= y~x,
+              se=FALSE,
+              color= "black",
+              size=0.5) +
+  annotate("text", x = 2000, y = 0.2,
+           label = "CV = 0.0022*(year) - 3.97931") +
+  annotate("text", x = 2000, y = 0.16,
+           label = "p-value < 0.001, R2 = 0.2139") +
+  ggsave(here::here("report_graphs",
+                    "5yr_cv",
+                    "pasadena_5yr_cv_graph.png"))
+  
+pasadena_5yr_graph
+```
 

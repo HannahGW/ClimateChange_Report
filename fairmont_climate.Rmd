@@ -195,7 +195,7 @@ summary(fairmont_5yr_lm)
 # p-value: p-value: 6.6e-06 (p < 0.001) - Significant
 
 # --------------------------------
-# Graph of Mt. Wilson 5-yr CV precipitation
+# Graph of Fairmont 5-yr CV precipitation
 
 fairmont_5yr_graph <- ggplot(data=fairmont_precip,
                                 aes(x = year,
