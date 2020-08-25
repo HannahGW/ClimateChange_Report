@@ -135,8 +135,17 @@ idyllwild_precip_graph
 ```
 
 ```{r}
-# Graph of 5-yr CV for Idyllwild Precipitation
-# Previous report did not graph 5-yr CV for Idyllwild...
+#  Idyllwild 5-yr CV Precipitation
+
+# -----------------------------
+# Statistics for 5-yr cv
+
+idyllwild_5yr_lm <- lm(x5yr_cv ~ years, data = idyllwild_precip)
+summary(idyllwild_5yr_lm)
+# p-value: 0.7411 - NOT Significant
+
+# -------------------------------
+# Graph of 5-yr CV
 
 idyllwild_precip_cv_graph <- ggplot(data=idyllwild_precip, 
                                     aes(x=years, 
@@ -145,12 +154,15 @@ idyllwild_precip_cv_graph <- ggplot(data=idyllwild_precip,
   geom_line(color="blue") +
   theme_minimal() +
   labs(title= "Idyllwild",
-       x= "Water Year", 
-       y= "5-Yr CV Annual Precipitation") +
+       x= "Growing Season (year)", 
+       y= "5 yr CV in annual growing season precipitation") +
   theme(plot.title = element_text(hjust = 0.5)) +
   scale_x_continuous(limits=c(1945, 2020), 
                      breaks=seq(1945,2020,10), 
-                     expand=c(0,1))
+                     expand=c(0,1)) +
+  ggsave(here::here("report_graphs",
+                    "5yr_cv",
+                    "idyllwild_5yr_cv_graph.png"))
 
 idyllwild_precip_cv_graph
 ```

@@ -28,29 +28,8 @@ mtwilson_temp <- read_csv(here::here("csv_files",
                                      "mtwilsonno2.csv")) %>%
   clean_names()
 
-
-# Create graph of averages (mean, max, and min)
-
-mtwilson_temp_graph <- ggplot(data=mtwilson_temp, aes(x=year)) +
-  geom_line(aes(y=mean), color="black") +
-  geom_line(aes(y=max), color="black") +
-  geom_line(aes(y=min), color="black") +
-  geom_point(aes(y=mean), color="black", pch=18, size=1.5) +
-  geom_point(aes(y=max), color="darkred", pch=15, size=1.5) +
-  geom_point(aes(y=min), color="gold", pch=17, size=1.5) +
-  labs(x="Years", y="Degrees Farenheit", title="Mt. Wilson No. 2") +
-  scale_x_continuous(limits=c(1945, 2020), breaks=seq(1945,2020,10), expand=c(0,1)) +
-  scale_y_continuous(limits=c(40,75), breaks=seq(40,75,5), expand=c(0,0)) +
-  theme_minimal() +
-  theme(plot.title = element_text(hjust = 0.5))
-
-mtwilson_temp_graph
-```
-
-```{r}
-# Statistics (linear regression (lm)) for mean, max, and min temperature at Mt. Wilson No. 2
-# only add linear regressions if p-value < 0.05
-# R2 value 
+# -----------------------------------------
+# Statistics (lm) for mean, max, and min temperature at Mt. Wilson No. 2
 
 # Mean model (lm)
 meantemp_lm <- lm(mean ~ year, data = mtwilson_temp)
@@ -70,7 +49,40 @@ summary(mintemp_lm)
 stargazer(mintemp_lm)
 # p-value: 4.464 x 10^-7 = Significant
 
+# ------------------------------------------
+# Create graph of averages (mean, max, and min)
+
+mtwilson_temp_graph <- ggplot(data=mtwilson_temp, aes(x=year)) +
+  geom_line(aes(y=mean), 
+            color="black") +
+  geom_line(aes(y=max), 
+            color="black") +
+  geom_line(aes(y=min), 
+            color="black") +
+  geom_point(aes(y=mean), 
+             color="black", 
+             pch=18, size=1.5) +
+  geom_point(aes(y=max), 
+             color="darkred", 
+             pch=15, size=1.5) +
+  geom_point(aes(y=min), 
+             color="gold", 
+             pch=17, size=1.5) +
+  labs(x="Years",
+       y="Degrees Farenheit", 
+       title="Mt. Wilson No. 2") +
+  scale_x_continuous(limits=c(1945, 2020), 
+                     breaks=seq(1945,2020,10), 
+                     expand=c(0,1)) +
+  scale_y_continuous(limits=c(40,75), 
+                     breaks=seq(40,75,5),
+                     expand=c(0,0)) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5))
+
+mtwilson_temp_graph
 ```
+
 
 ```{r}
 # Mt. Wilson No. 2 Precipitation Graph
@@ -94,7 +106,7 @@ mtwilson_precip_graph <- ggplot(data=mtwilson_precip,
   theme_minimal() +
   geom_point(color = "blue") +
   geom_line(color = "blue") + 
-  labs(x="Growing Season (year)",
+  labs(x="Growing Season (Oct-Sept)",
        y="Precipitation (inches)",
        title="Mt. Wilson No. 2") +
   scale_x_continuous(limits=c(1945, 2020),
@@ -107,6 +119,40 @@ mtwilson_precip_graph <- ggplot(data=mtwilson_precip,
 
 
 mtwilson_precip_graph
+
+```
+
+```{r}
+# Mt. Wilson No. 2 5-yr CV precipitation 
+
+# --------------------------------
+# statistics for 5-yr cv
+
+mtwilson_5yr_lm <- lm(x5yr_cv ~ year, data=mtwilson_precip)
+summary(mtwilson_5yr_lm)
+# p-value: 0.152 - NOT Significant
+
+# --------------------------------
+# Graph of Mt. Wilson 5-yr CV precipitation
+
+mtwilson_5yr_graph <- ggplot(data=mtwilson_precip,
+                                aes(x = year,
+                                    y = x5yr_cv)) +
+  theme_minimal() +
+  geom_point(color = "blue") +
+  geom_line(color = "blue") + 
+  labs(x="Growing Season (year)",
+       y="5 yr CV in annual growing season precipitation",
+       title="Mt. Wilson No. 2") +
+  scale_x_continuous(limits=c(1945, 2020),
+                     breaks=seq(1945,2020,10),
+                     expand=c(0,1)) +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  ggsave(here::here("report_graphs",
+                    "5yr_cv",
+                    "mtwilson_5yr_cv_graph.png"))
+  
+mtwilson_5yr_graph
 
 ```
 

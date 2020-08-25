@@ -125,6 +125,51 @@ palmdale_precip_graph
 ```
 
 ```{r}
+# Palmdale 5-yr CV precipitation 
+
+# --------------------------------
+# statistics for 5-yr cv
+
+palmdale_5yr_lm <- lm(x5yr_cv ~ year, data=palmdale_precip)
+summary(palmdale_5yr_lm)
+# p-value: 0.001735 - Significant
+
+# --------------------------------
+# Graph of Palmdale 5-yr CV precipitation
+
+palmdale_5yr_graph <- ggplot(data=palmdale_precip,
+                                aes(x = year,
+                                    y = x5yr_cv)) +
+  theme_minimal() +
+  geom_point(color = "blue") +
+  geom_line(color = "blue") + 
+  labs(x="Growing Season (year)",
+       y="5 yr CV in annual growing season precipitation",
+       title="Palmdale") +
+  scale_x_continuous(limits=c(1919, 2020),
+                     breaks=seq(1919,2020,10),
+                     expand=c(0,1)) +
+  theme(plot.title = element_text(hjust = 0.5)) +
+   geom_smooth(method='lm',
+              formula= y~x,
+              se=FALSE,
+              color= "black",
+              size=0.5) +
+  annotate("text", x = 1939, y = 1,
+           label = "CV = 0.0023*(year) - 4.01345") +
+  annotate("text", x = 1939, y = 0.95, 
+           label = "p-value = 0.001735, R2=0.0903") +
+  ggsave(here::here("report_graphs",
+                    "5yr_cv",
+                    "palmdale_5yr_cv_graph.png"))
+  
+palmdale_5yr_graph
+```
+
+
+
+
+```{r}
 # Palmdale Snowfall
 
 # read in csv
