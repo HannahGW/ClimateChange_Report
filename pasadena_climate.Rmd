@@ -200,3 +200,21 @@ pasadena_5yr_graph <- ggplot(data=pasadena_precip,
 pasadena_5yr_graph
 ```
 
+```{r}
+# Change in Precipitation CV
+# Use this equation: 
+# (final year)*(X-Variable)+(Intercept)] - [(year 1)*(X-Variable)+(Intercept)
+# year 1: 1909
+# final year: 2019
+
+# -----------------------------------
+# Change in CV: 0.244574
+
+x_variable <- 0.0022234
+intercept <- -3.9793120
+
+cv_change <- (((2019)*x_variable) + intercept) - (((1909)*x_variable) + intercept)
+
+cv_change
+```
+

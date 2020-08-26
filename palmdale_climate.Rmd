@@ -201,6 +201,24 @@ palmdale_5yr_graph <- ggplot(data=palmdale_precip,
 palmdale_5yr_graph
 ```
 
+```{r}
+# Change in Precipitation CV
+# Use this equation: 
+# (final year)*(X-Variable)+(Intercept)] - [(year 1)*(X-Variable)+(Intercept)
+# year 1: 1920
+# final year: 2017
+
+# -----------------------------------
+# Change in CV: 0.222324
+
+x_variable <- 0.002292
+intercept <- -4.013449
+
+cv_change <- (((2017)*x_variable) + intercept) - (((1920)*x_variable) + intercept)
+
+cv_change
+```
+
 
 
 
@@ -254,5 +272,23 @@ palmdalesnow_graph <- ggplot(data=palmdale_snow,
 # The annotate codeline is not reproducible, meaning you will have to manually enter the p-value and slope to the graph
 
 palmdalesnow_graph
+```
+
+```{r}
+# Change in Snowfall
+# Use this equation: 
+# (final year)*(X-Variable)+(Intercept)] - [(year 1)*(X-Variable)+(Intercept)
+# year 1: 1935
+# final year: 2010
+
+# -----------------------------------
+# Change in CV: -3.0105
+
+x_variable <- -0.04014
+intercept <- 80.37314
+
+snowfall_change <- (((2010)*x_variable) + intercept) - (((1935)*x_variable) + intercept)
+
+snowfall_change
 ```
 
