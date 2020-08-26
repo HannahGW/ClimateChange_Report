@@ -34,19 +34,19 @@ mtwilson_temp <- read_csv(here::here("csv_files",
 # Mean model (lm)
 meantemp_lm <- lm(mean ~ year, data = mtwilson_temp)
 summary(meantemp_lm)
-stargazer(meantemp_lm)
+# stargazer(meantemp_lm)
 # p-value: 1.179 x 10^-12 = Significant
 
 # Max model (lm)
 maxtemp_lm <- lm(max ~ year, data = mtwilson_temp)
 summary(maxtemp_lm)
-stargazer(maxtemp_lm)
+# stargazer(maxtemp_lm)
 # p-value: 2.279 x 10^-14 = Significant
 
 # Min model (lm)
 mintemp_lm <- lm(min ~ year, data = mtwilson_temp)
 summary(mintemp_lm)
-stargazer(mintemp_lm)
+# stargazer(mintemp_lm)
 # p-value: 4.464 x 10^-7 = Significant
 
 # ------------------------------------------
@@ -82,6 +82,41 @@ mtwilson_temp_graph <- ggplot(data=mtwilson_temp, aes(x=year)) +
 
 mtwilson_temp_graph
 ```
+
+```{r}
+# Change in temperature
+# Use this equation: 
+# (final year)*(X-Variable)+(Intercept)] - [(year 1)*(X-Variable)+(Intercept)
+# year 1: 1949
+# final year: 2017
+
+# -----------------------------------
+# Mean temperature change: 4.7668
+
+x_variable_mean <- 0.07010
+intercept_mean <- -82.18578
+
+mean_temp_change <- (((2017)*x_variable_mean) + intercept_mean) - (((1949)*x_variable_mean) + intercept_mean)
+
+mean_temp_change
+
+# --------------------------------
+# Max temperature change: 6.1166
+
+x_variable_max <- 8.995e-02
+intercept_max <- -1.125e+02
+max_temp_change <- (((2017)*x_variable_max) + intercept_max) - (((1949)*x_variable_max) + intercept_max)
+max_temp_change
+
+# -------------------------------
+# Min temperature change: 3.153704
+
+x_variable_min <- 0.046378
+intercept_min <-  -44.320519
+min_temp_change <- (((2017)*x_variable_min) + intercept_min) - (((1949)*x_variable_min) + intercept_min)
+min_temp_change
+```
+
 
 
 ```{r}

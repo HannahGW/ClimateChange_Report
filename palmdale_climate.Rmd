@@ -81,6 +81,41 @@ palmdale_temp_graph <- ggplot(data=palmdale_temp,
 palmdale_temp_graph
 ```
 
+```{r}
+# Change in temperature
+# Use this equation: (final year)*(X-Variable)+(Intercept)] - [(year 1)*(X-Variable)+(Intercept)
+
+# -----------------------------------
+# Mean temperature change: 2.097196
+# year 1: 1933
+# final year: 2019
+
+x_variable <- 0.024386
+intercept <- 12.723140
+
+palmdale_change_temp <- (((2019)*x_variable) + intercept) - (((1933)*x_variable) + intercept)
+# 61.958474 - 59.861278
+palmdale_change_temp 
+
+# --------------------------------
+# Max temperature change: 2.84316 
+
+x_variable_max <- 0.03306
+intercept_max <- 12.07135
+max_temp_change <- (((2019)*x_variable_max) + intercept_max) - (((1933)*x_variable_max) + intercept_max)
+max_temp_change
+
+# -------------------------------
+# Min temperature change: 4.110026
+
+x_variable_min <- 0.047791
+intercept_min <- -47.023461
+min_temp_change <- (((2019)*x_variable_min) + intercept_min) - (((1933)*x_variable_min) + intercept_min)
+min_temp_change
+```
+
+
+
 
 ```{r}
 # Palmdale Precipitation
@@ -185,6 +220,7 @@ palmdale_snow <- read_csv(here::here("csv_files",
 palmdalesnow_lm <- lm(total ~ year, data=palmdale_snow)
 summary(palmdalesnow_lm)
 # p-value: 0.03602 - Significant
+# equation: snowfall = -0.04014*(year) + 80.37314
 
 # -----------------------------------
 
@@ -208,7 +244,10 @@ palmdalesnow_graph <- ggplot(data=palmdale_snow,
               se=FALSE,
               color= "black",
               size=0.5) +
-  annotate("text", x = 2005, y = 17.5, label = "p-value = 0.03602, slope = -0.04014") +
+  annotate("text", x = 2005, y = 17.5, 
+           label = "p-value = 0.03602, slope = -0.04014") +
+  annotate("text", x = 2000, y = 16,
+           label = "snowfall = -0.04014*(year) + 80.37314") +
   ggsave(here::here("report_graphs",
                     "snowfall",
                     "palmdale_snowfall_graph.png"))

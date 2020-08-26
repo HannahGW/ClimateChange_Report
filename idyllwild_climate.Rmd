@@ -32,7 +32,7 @@ idyllwild_temp <- read_csv(here::here("csv_files",
 # Statistics (linear regression (lm)) for mean, max, and min temperature in Idyllwild
 
 ## Mean model (lm)
-meantemp_lm <- lm(mean ~ year, data=idyllwild_temp)
+meantemp_lm <- lm(mean ~ year, data=idyllwild_temp)  
 summary(meantemp_lm)
 # stargazer(meantemp_lm, type = "text")
 # p-value: 2.678x10^-09 = Significant
@@ -85,6 +85,33 @@ idyllwild_temp_graph <- ggplot(data=idyllwild_temp,
 
 
 idyllwild_temp_graph
+```
+
+
+```{r}
+# Change in temperature
+# Use this equation: 
+# (final year)*(X-Variable)+(Intercept)] - [(year 1)*(X-Variable)+(Intercept)
+# year 1: 1946
+# final year: 2019
+
+# -----------------------------------
+# Mean temperature change: 3.39158
+
+x_variable_mean <- 0.04646
+intercept_mean <- -38.90670
+
+mean_temp_change <- (((2019)*x_variable_mean) + intercept_mean) - (((1946)*x_variable_mean) + intercept_mean)
+
+mean_temp_change
+
+# -------------------------------
+# Min temperature change: 6.59044
+
+x_variable_min <- 9.028e-02
+intercept_min <- -1.409e+02
+min_temp_change <- (((2019)*x_variable_min) + intercept_min) - (((1946)*x_variable_min) + intercept_min)
+min_temp_change
 ```
 
 

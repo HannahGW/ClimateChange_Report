@@ -81,6 +81,41 @@ pasadena_temp_graph <- ggplot(data=pasadena_temp, aes(x=year)) +
 pasadena_temp_graph
 ```
 
+```{r}
+# Change in temperature
+# Use this equation: 
+# (final year)*(X-Variable)+(Intercept)] - [(year 1)*(X-Variable)+(Intercept)
+# year 1: 1909
+# final year: 2019
+
+# -----------------------------------
+# Mean temperature change: 6.57041
+
+x_variable_mean <- 0.059731
+intercept_mean <- -53.040541
+
+mean_temp_change <- (((2019)*x_variable_mean) + intercept_mean) - (((1909)*x_variable_mean) + intercept_mean)
+
+mean_temp_change
+
+# --------------------------------
+# Max temperature change: 4.61945 
+
+x_variable_max <- 0.041995 
+intercept_max <- -5.343924
+max_temp_change <- (((2019)*x_variable_max) + intercept_max) - (((1909)*x_variable_max) + intercept_max)
+max_temp_change
+
+# -------------------------------
+# Min temperature change: 8.5437
+
+x_variable_min <- 7.767e-02
+intercept_min <-  -1.011e+02
+min_temp_change <- (((2019)*x_variable_min) + intercept_min) - (((1909)*x_variable_min) + intercept_min)
+min_temp_change
+```
+
+
 
 ```{r}
 # Pasadena Precipitation

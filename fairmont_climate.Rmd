@@ -36,7 +36,7 @@ fairmont_temp <- read_csv(here::here("csv_files",
 ## Mean model (lm)
 meantemp_lm <- lm(mean_f ~ year_s, data=fairmont_temp)
 summary(meantemp_lm)
-stargazer(meantemp_lm, type = "text")
+# stargazer(meantemp_lm, type = "text")
 # Formula: mean = 0.024386*(year) + 12.723140
 # R^2: 0.1458 
 # p-value: 7.94e-05 (p < 0.001) Significant
@@ -44,18 +44,18 @@ stargazer(meantemp_lm, type = "text")
 ## Max model (lm)
 maxtemp_lm <- lm(max_f ~ year_s, data=fairmont_temp)
 summary(maxtemp_lm)
-stargazer(maxtemp_lm, type ="text")
+# stargazer(maxtemp_lm, type ="text")
 # Formula: max = 0.032428*(year) + 7.330187
 # R^2: 0.2008
-# p-value: p < 0.01 Significant
+# p-value: 3.139e-06 (p < 0.01) Significant
 
 ## Min model (lm)
 mintemp_lm <- lm(min_f ~ year_s, data=fairmont_temp)
 summary(mintemp_lm)
-stargazer(mintemp_lm, type = "text")
+# stargazer(mintemp_lm, type = "text")
 # Formula: min = 0.015996*(year) + 18.780501
 # R^2: 0.058
-# p-value: p < 0.05 Significant
+# p-value: 0.01086 (p < 0.05) Significant
 
 # --------------------------------------------
 # Create graph of averages (mean, max, and min)
@@ -90,12 +90,12 @@ fairmont_temp_graph <- ggplot(data=fairmont_temp,
                      breaks=seq(45,80,5),
                      expand=c(0,0)) +
   theme_minimal() +
-  theme(plot.title = element_text(hjust = 0.5)) +
-  geom_smooth(method='lm',
-              formula= y~x,
-              se=FALSE,
-              color= "black",
-              size=0.5)
+  theme(plot.title = element_text(hjust = 0.5)) 
+  # geom_smooth(method='lm',
+  #             formula= y~x,
+  #             se=FALSE,
+  #             color= "black",
+  #             size=0.5)
 
 # ggpubr::stat_regline_equation(aes(y=mean_f,x=year_s), output.type = "expression") 
 
@@ -103,6 +103,39 @@ fairmont_temp_graph
 
 ```
 
+```{r}
+# Change in temperature
+# Use this equation: 
+# (final year)*(X-Variable)+(Intercept)] - [(year 1)*(X-Variable)+(Intercept)
+# year 1: 1922
+# final year: 2019
+
+# -----------------------------------
+# Mean temperature change: 2.365442
+
+x_variable_mean <- 0.024386
+intercept_mean <- 12.723140
+
+mean_temp_change <- (((2019)*x_variable_mean) + intercept_mean) - (((1922)*x_variable_mean) + intercept_mean)
+
+mean_temp_change
+
+# --------------------------------
+# Max temperature change: 3.145516
+
+x_variable_max <- 0.032428
+intercept_max <- 7.330187
+max_temp_change <- (((2019)*x_variable_max) + intercept_max) - (((1922)*x_variable_max) + intercept_max)
+max_temp_change
+
+# -------------------------------
+# Min temperature change: 1.551612
+
+x_variable_min <- 0.015996
+intercept_min <- 18.780501
+min_temp_change <- (((2019)*x_variable_min) + intercept_min) - (((1922)*x_variable_min) + intercept_min)
+min_temp_change
+```
 
 
 ```{r}
