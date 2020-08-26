@@ -90,7 +90,10 @@ fairmont_temp_graph <- ggplot(data=fairmont_temp,
                      breaks=seq(45,80,5),
                      expand=c(0,0)) +
   theme_minimal() +
-  theme(plot.title = element_text(hjust = 0.5)) 
+  theme(plot.title = element_text(hjust = 0.5)) +
+  ggsave(here::here("report_graphs",
+                    "temperature",
+                    "fairmont_temp_graph.png"))
   # geom_smooth(method='lm',
   #             formula= y~x,
   #             se=FALSE,
