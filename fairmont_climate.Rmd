@@ -60,95 +60,12 @@ summary(mintemp_lm)
 # --------------------------------------------
 # Create graph of averages (mean, max, and min)
 
-fairmont_temp_graph <- ggplot(data=fairmont_temp,
-                              aes(x=year_s)) +
-  geom_line(aes(y=mean_f),
-            color="black") +
-  geom_line(aes(y=max_f),
-            color="black") +
-  geom_line(aes(y=min_f),
-            color="black") +
-  geom_point(aes(y=mean_f),
-             color="black",
-             pch=18,
-             size=1.5) +
-  geom_point(aes(y=max_f),
-             color="darkred",
-             pch=15,
-             size=1.5) +
-  geom_point(aes(y=min_f),
-             color="gold",
-             pch=17,
-             size=1.5) +
-  labs(x="Years", 
-       y="Degrees Farenheit",
-       title="Fairmont") +
-  scale_x_continuous(limits=c(1920, 2020),
-                     breaks=seq(1920,2020,10),
-                     expand=c(0,1)) +
-  scale_y_continuous(limits=c(45,80),
-                     breaks=seq(45,80,5),
-                     expand=c(0,0)) +
-  theme_minimal() +
-  theme(plot.title = element_text(hjust = 0.5)) +
-  ggsave(here::here("report_graphs",
-                    "temperature",
-                    "fairmont_temp_graph.png"))
-  # geom_smooth(method='lm',
-  #             formula= y~x,
-  #             se=FALSE,
-  #             color= "black",
-  #             size=0.5)
-
-# ggpubr::stat_regline_equation(aes(y=mean_f,x=year_s), output.type = "expression") 
-
-fairmont_temp_graph
-
-```
-
-```{r}
-# Change in temperature
-# Use this equation: 
-# (final year)*(X-Variable)+(Intercept)] - [(year 1)*(X-Variable)+(Intercept)
-# year 1: 1922
-# final year: 2019
-
-# -----------------------------------
-# Mean temperature change: 2.365442
-
-x_variable_mean <- 0.024386
-intercept_mean <- 12.723140
-
-mean_temp_change <- (((2019)*x_variable_mean) + intercept_mean) - (((1922)*x_variable_mean) + intercept_mean)
-
-mean_temp_change
-
-# --------------------------------
-# Max temperature change: 3.145516
-
-x_variable_max <- 0.032428
-intercept_max <- 7.330187
-max_temp_change <- (((2019)*x_variable_max) + intercept_max) - (((1922)*x_variable_max) + intercept_max)
-max_temp_change
-
-# -------------------------------
-# Min temperature change: 1.551612
-
-x_variable_min <- 0.015996
-intercept_min <- 18.780501
-min_temp_change <- (((2019)*x_variable_min) + intercept_min) - (((1922)*x_variable_min) + intercept_min)
-min_temp_change
-```
-
-
-```{r}
-# Playing with data
-fairmont_temp_demo <- fairmont_temp %>%
+fairmont_temp <- fairmont_temp %>%
   pivot_longer('mean_f':'min_f',
                names_to = "temp_average",
                values_to = "value")
 
-demo_graph_fairmont <- ggplot(data=fairmont_temp_demo, 
+fairmont_temp_graph <- ggplot(data=fairmont_temp_demo, 
                               aes(x=year_s, y=value, 
                                   col=temp_average)) +
   theme_minimal() +
@@ -188,12 +105,45 @@ demo_graph_fairmont <- ggplot(data=fairmont_temp_demo,
                     "fairmont_temperature_graph.png"))
 
   
-demo_graph_fairmont
+fairmont_temp_graph
 
 # This will yield the graph with trendlines and annotation. Using pivot_longer() is the only way that I have been able to add multiple trendlines. 
 
 ```
 
+```{r}
+# Change in temperature
+# Use this equation: 
+# (final year)*(X-Variable)+(Intercept)] - [(year 1)*(X-Variable)+(Intercept)
+# year 1: 1922
+# final year: 2019
+
+# -----------------------------------
+# Mean temperature change: 2.365442
+
+x_variable_mean <- 0.024386
+intercept_mean <- 12.723140
+
+mean_temp_change <- (((2019)*x_variable_mean) + intercept_mean) - (((1922)*x_variable_mean) + intercept_mean)
+
+mean_temp_change
+
+# --------------------------------
+# Max temperature change: 3.145516
+
+x_variable_max <- 0.032428
+intercept_max <- 7.330187
+max_temp_change <- (((2019)*x_variable_max) + intercept_max) - (((1922)*x_variable_max) + intercept_max)
+max_temp_change
+
+# -------------------------------
+# Min temperature change: 1.551612
+
+x_variable_min <- 0.015996
+intercept_min <- 18.780501
+min_temp_change <- (((2019)*x_variable_min) + intercept_min) - (((1922)*x_variable_min) + intercept_min)
+min_temp_change
+```
 
 
 ```{r}

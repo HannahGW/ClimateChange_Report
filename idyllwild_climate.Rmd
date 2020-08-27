@@ -16,7 +16,6 @@ library(ggplot2)
 library(janitor)
 library(lubridate)
 library(here)
-library(stargazer)
 ```
 
 ```{r}
@@ -34,22 +33,67 @@ idyllwild_temp <- read_csv(here::here("csv_files",
 ## Mean model (lm)
 meantemp_lm <- lm(mean ~ year, data=idyllwild_temp)  
 summary(meantemp_lm)
-# stargazer(meantemp_lm, type = "text")
 # p-value: 2.678x10^-09 = Significant
 
 ## Max model (lm)
 maxtemp_lm <- lm(max ~ year, data=idyllwild_temp)
 summary(maxtemp_lm)
-# stargazer(maxtemp_lm, type = "text")
 # p-value: 0.6608 = NOT Significant
 
 ## Min model (lm)
 mintemp_lm <- lm(min ~ year, data=idyllwild_temp)
 summary(mintemp_lm)
-# stargazer(mintemp_lm, type = "text")
 # p-value: < 2.2x10^-16 = Significant
 
 # ----------------------------------------
+# Graph of Idyllwild mean and min temperature (Max is not significant)
+
+idyllwild_temp <- idyllwild_temp %>%
+  pivot_longer('mean':'min',
+               names_to = "temp_average",
+               values_to = "value")
+
+idyllwild_temp_graph <- ggplot(data=idyllwild_temp, 
+                              aes(x=year, y=value, 
+                                  col=temp_average)) +
+  theme_minimal() +
+  geom_line() +
+  geom_point() +
+  geom_smooth(data=subset(idyllwild_temp,
+                          temp_average=="mean"|temp_average=="min"),
+              method="lm", 
+              se=FALSE,
+              size=0.65) +
+  labs(x="Year",
+       y="Degrees Farenheit", 
+       title="Idyllwild") +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  scale_x_continuous(limits=c(1945, 2021),
+                     breaks=seq(1945,2021,10),
+                     expand=c(0,1)) +
+  scale_y_continuous(limits=c(30,75),
+                     breaks=seq(30,75,5),
+                     expand=c(0,0)) +
+  scale_color_discrete(name=NULL,
+                       labels= c("max",
+                                 "mean",
+                                 "min")) +
+  annotate("text", x = 1965, y = 57.5,
+           label = "mean: p-value < 0.001
+           slope=0.04646",
+           size=3) +
+  annotate("text", x = 1965, y = 45,
+           label = "min: p-value < 0.001
+           slope=9.028e-02",
+           size=3) +
+  ggsave(here::here("report_graphs",
+                    "temperature",
+                    "idyllwild_temperature_graph.png"))
+
+idyllwild_temp_graph
+```
+
+```{r}
 # Create graph of averages (mean, max, and min)
 
 idyllwild_temp_graph <- ggplot(data=idyllwild_temp,
