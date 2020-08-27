@@ -92,7 +92,10 @@ palmdale_temp_graph <- ggplot(data=palmdale_temp,
            size=3) +
   ggsave(here::here("report_graphs",
                     "temperature",
-                    "palmdale_temperature_graph.png"))
+                    "palmdale_temperature_graph.png"),
+          height=5,
+         width=7,
+         units="in")
 
 palmdale_temp_graph
 ```
@@ -211,7 +214,10 @@ palmdale_5yr_graph <- ggplot(data=palmdale_precip,
            label = "p-value = 0.001735, R2=0.0903") +
   ggsave(here::here("report_graphs",
                     "5yr_cv",
-                    "palmdale_5yr_cv_graph.png"))
+                    "palmdale_5yr_cv_graph.png"),
+          height=5,
+         width=7,
+         units="in")
   
 palmdale_5yr_graph
 ```
@@ -283,8 +289,10 @@ palmdalesnow_graph <- ggplot(data=palmdale_snow,
            label = "snowfall = -0.04014*(year) + 80.37314") +
   ggsave(here::here("report_graphs",
                     "snowfall",
-                    "palmdale_snowfall_graph.png"))
-# The annotate codeline is not reproducible, meaning you will have to manually enter the p-value and slope to the graph
+                    "palmdale_snowfall_graph.png"),
+          height=5,
+         width=7,
+         units="in")
 
 palmdalesnow_graph
 ```

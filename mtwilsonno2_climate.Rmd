@@ -88,7 +88,10 @@ mtwilson_temp_graph <- ggplot(data=mtwilson_temp,
            size=3) +
   ggsave(here::here("report_graphs",
                     "temperature",
-                    "mtwilson_temperature_graph.png"))
+                    "mtwilson_temperature_graph.png"),
+          height=5,
+         width=7,
+         units="in")
 
 
 mtwilson_temp_graph
@@ -243,13 +246,13 @@ mtwilson_snowfall_graph <- ggplot(data=mtwilson_snowfall,
   annotate("text", x = 2005, y = 80, label = "p-value < 0.001, slope = -0.7182") +
   ggsave(here::here("report_graphs",
                     "snowfall",
-                    "mtwilson_snowfall_graph.png"))
+                    "mtwilson_snowfall_graph.png"),
+          height=5,
+         width=7,
+         units="in")
   
 mtwilson_snowfall_graph
 
-  # ggpubr::stat_regline_equation(aes(y=total,
-  #                                   x=year),
-  #                               output.type = "expression") <- this is another option to add the equation to the graph
 
 ```
 

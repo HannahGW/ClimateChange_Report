@@ -87,7 +87,10 @@ pasadena_temp_graph <- ggplot(data=pasadena_temp,
            size=3) +
   ggsave(here::here("report_graphs",
                     "temperature",
-                    "pasadena_temperature_graph.png"))
+                    "pasadena_temperature_graph.png"),
+          height=5,
+         width=7,
+         units="in")
 
 pasadena_temp_graph
 ```
@@ -206,7 +209,10 @@ pasadena_5yr_graph <- ggplot(data=pasadena_precip,
            label = "p-value < 0.001, R2 = 0.2139") +
   ggsave(here::here("report_graphs",
                     "5yr_cv",
-                    "pasadena_5yr_cv_graph.png"))
+                    "pasadena_5yr_cv_graph.png"),
+          height=5,
+         width=7,
+         units="in")
   
 pasadena_5yr_graph
 ```
