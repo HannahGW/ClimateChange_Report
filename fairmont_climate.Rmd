@@ -143,38 +143,54 @@ min_temp_change
 
 ```{r}
 # Playing with data
-# fairmont_temp_demo <- fairmont_temp %>%
-#   pivot_wider()
+fairmont_temp_demo <- fairmont_temp %>%
+  pivot_longer('mean_f':'min_f',
+               names_to = "temp_average",
+               values_to = "value")
 
-# Graph of just one line + statistics (Test)
-# Fairmont mean temperature
-
-fairmont_meantemp_graph <- ggplot(data=fairmont_temp,
-                                  aes(x=year_s,
-                                      y=mean_f)) +
-  geom_line(color="black") +
-  geom_point(color="black",
-             pch=18,
-             size=1.5) +
+demo_graph_fairmont <- ggplot(data=fairmont_temp_demo, 
+                              aes(x=year_s, y=value, 
+                                  col=temp_average)) +
+  theme_minimal() +
+  geom_line() +
+  geom_point() +
+  geom_smooth(data=fairmont_temp_demo,
+              method="lm", 
+              se=FALSE) +
+  labs(x="Year",
+       y="Degrees Farenheit", 
+       title="Fairmont") +
+  theme(plot.title = element_text(hjust = 0.5)) +
   scale_x_continuous(limits=c(1920, 2020),
                      breaks=seq(1920,2020,10),
                      expand=c(0,1)) +
   scale_y_continuous(limits=c(45,80),
                      breaks=seq(45,80,5),
                      expand=c(0,0)) +
-  theme_minimal() +
-  theme(plot.title = element_text(hjust = 0.5)) +
-  geom_smooth(method='lm',
-              formula= y~x,
-              se=FALSE,
-              color= "black",
-              size=0.5) +
-  ggpubr::stat_regline_equation(aes(y=mean_f,
-                                    x=year_s),
-                                output.type = "expression")
+  scale_color_discrete(name=NULL,
+                       labels= c("max",
+                                 "mean",
+                                 "min")) +
+  annotate("text", x = 1945, y = 65,
+           label = "mean: p-value < 0.001
+           slope=0.024386",
+           size=3) +
+  annotate("text", x = 1945, y = 55,
+           label = "min: p-value < 0.5
+           slope=0.015996",
+           size=3) +
+  annotate("text", x = 1945, y = 76,
+           label = "max: p-value < 0.001
+           slope=0.032428",
+           size=3) +
+  ggsave(here::here("report_graphs",
+                    "temperature",
+                    "fairmont_temperature_graph.png"))
 
+  
+demo_graph_fairmont
 
-fairmont_meantemp_graph
+# This will yield the graph with trendlines and annotation. Using pivot_longer() is the only way that I have been able to add multiple trendlines. 
 
 ```
 
