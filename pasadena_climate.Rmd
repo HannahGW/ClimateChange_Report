@@ -32,51 +32,62 @@ pasadena_temp <- read_csv(here::here("csv_files",
 ## Mean model (lm)
 meantemp_lm <- lm(mean ~ year, data=pasadena_temp)
 summary(meantemp_lm)
-# stargazer(meantemp_lm, type = "text")
 # p-value: < 2.2 x 10 ^-16 = Significant
 
 ## Max model (lm)
 maxtemp_lm <- lm(max ~ year, data=pasadena_temp)
 summary(maxtemp_lm)
-# stargazer(maxtemp_lm, type ="text")
 # p-value: < 2.2 x 10 ^-16 = Significant
 
 ## Min model (lm)
 mintemp_lm <- lm(min ~ year, data=pasadena_temp)
 summary(mintemp_lm)
-# stargazer(mintemp_lm, type = "text")
 # p-value: < 2.2 x 10 ^-16 = Significant
  
 #------------------------------------
 # Create graph of averages (mean, max, and min)
 
-pasadena_temp_graph <- ggplot(data=pasadena_temp, aes(x=year)) +
-  geom_line(aes(y=mean), 
-            color="black") +
-  geom_line(aes(y=max), 
-            color="black") +
-  geom_line(aes(y=min), 
-            color="black") +
-  geom_point(aes(y=mean), 
-             color="black", 
-             pch=18, size=1.5) +
-  geom_point(aes(y=max), 
-             color="darkred",
-             pch=15, size=1.5) +
-  geom_point(aes(y=min), 
-             color="gold", 
-             pch=17, size=1.5) +
+pasadena_temp <- pasadena_temp %>%
+  pivot_longer('mean':'min',
+               names_to = "temp_average",
+               values_to = "value")
+
+pasadena_temp_graph <- ggplot(data=pasadena_temp, 
+                              aes(x=year, y=value, 
+                                  col=temp_average)) +
+  theme_minimal() +
+  geom_line() +
+  geom_point() +
+  geom_smooth(data=pasadena_temp,
+              method="lm", 
+              se=FALSE,
+              size=0.65) +
   labs(x="Year",
        y="Degrees Farenheit", 
        title="Pasadena") +
-  scale_x_continuous(limits=c(1908, 2020), 
-                     breaks=seq(1908,2020,10), 
+  theme(plot.title = element_text(hjust = 0.5), 
+        legend.position="none") +
+  scale_x_continuous(limits=c(1905, 2020),
+                     breaks=seq(1905,2020,10),
                      expand=c(0,1)) +
-  scale_y_continuous(limits=c(45,85), 
-                     breaks=seq(45,85,5), 
+  scale_y_continuous(limits=c(40,85),
+                     breaks=seq(40,85,5),
                      expand=c(0,0)) +
-  theme_minimal() +
-  theme(plot.title = element_text(hjust = 0.5))
+  annotate("text", x = 1968, y = 70,
+           label = "mean: p-value < 0.001
+           slope=0.059731",
+           size=3) +
+  annotate("text", x = 1968, y = 57,
+           label = "min: p-value < 0.001
+           slope=7.767e-02",
+           size=3) +
+  annotate("text", x = 1968, y = 82,
+           label = "max: p-value < 0.001
+           slope=0.041995",
+           size=3) +
+  ggsave(here::here("report_graphs",
+                    "temperature",
+                    "pasadena_temperature_graph.png"))
 
 pasadena_temp_graph
 ```

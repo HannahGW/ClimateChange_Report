@@ -77,17 +77,17 @@ fairmont_temp_graph <- ggplot(data=fairmont_temp_demo,
   labs(x="Year",
        y="Degrees Farenheit", 
        title="Fairmont") +
-  theme(plot.title = element_text(hjust = 0.5)) +
+  theme(plot.title = element_text(hjust = 0.5), legend.position="none") +
   scale_x_continuous(limits=c(1920, 2020),
                      breaks=seq(1920,2020,10),
                      expand=c(0,1)) +
   scale_y_continuous(limits=c(45,80),
                      breaks=seq(45,80,5),
                      expand=c(0,0)) +
-  scale_color_discrete(name=NULL,
-                       labels= c("max",
-                                 "mean",
-                                 "min")) +
+  # scale_color_discrete(name=NULL,
+  #                      labels= c("max",
+  #                                "mean",
+  #                                "min")) +
   annotate("text", x = 1945, y = 65,
            label = "mean: p-value < 0.001
            slope=0.024386",
