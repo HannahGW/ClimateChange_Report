@@ -49,34 +49,50 @@ summary(mintemp_lm)
 
 # Create graph of averages (mean, max, and min)
 
+palmdale_temp <- palmdale_temp %>%
+  pivot_longer('mean':'min',
+               names_to = "temp_average",
+               values_to = "value")
+
 palmdale_temp_graph <- ggplot(data=palmdale_temp, 
-                              aes(x=year)) +
-  geom_line(aes(y=mean), 
-            color="black") +
-  geom_line(aes(y=max),
-            color="black") +
-  geom_line(aes(y=min), 
-            color="black") +
-  geom_point(aes(y=mean), 
-             color="black", 
-             pch=18, size=1.5) +
-  geom_point(aes(y=max), 
-             color="darkred",
-             pch=15, size=1.5) +
-  geom_point(aes(y=min), 
-             color="gold", 
-             pch=17, size=1.5) +
-  labs(x="Year", 
-       y="Degrees Farenheit",
-       title="Palmdale") +
-  scale_x_continuous(limits=c(1933, 2020), 
-                     breaks=seq(1933,2020,10), 
-                     expand=c(0,1)) +
-  scale_y_continuous(limits=c(40,85), 
-                     breaks=seq(40,85,5), 
-                     expand=c(0,0)) +
+                              aes(x=year, y=value, 
+                                  col=temp_average)) +
   theme_minimal() +
-  theme(plot.title = element_text(hjust = 0.5))
+  geom_line() +
+  geom_point() +
+  geom_smooth(data=palmdale_temp,
+              method="lm", 
+              se=FALSE,
+              size=0.65) +
+  labs(x="Year",
+       y="Degrees Farenheit", 
+       title="Palmdale") +
+  theme(plot.title = element_text(hjust = 0.5), legend.position="none") +
+  scale_x_continuous(limits=c(1930, 2020),
+                     breaks=seq(1930,2020,10),
+                     expand=c(0,1)) +
+  scale_y_continuous(limits=c(40,85),
+                     breaks=seq(40,85,5),
+                     expand=c(0,0)) +
+  # scale_color_discrete(name=NULL,
+  #                      labels= c("max",
+  #                                "mean",
+  #                                "min")) +
+  annotate("text", x = 1968, y = 70,
+           label = "mean: p-value < 0.001
+           slope=0.04022",
+           size=3) +
+  annotate("text", x = 1968, y = 55,
+           label = "min: p-value < 0.001
+           slope=0.03306",
+           size=3) +
+  annotate("text", x = 1968, y = 82,
+           label = "max: p-value < 0.001
+           slope=0.03306",
+           size=3) +
+  ggsave(here::here("report_graphs",
+                    "temperature",
+                    "palmdale_temperature_graph.png"))
 
 palmdale_temp_graph
 ```
@@ -113,7 +129,6 @@ intercept_min <- -47.023461
 min_temp_change <- (((2019)*x_variable_min) + intercept_min) - (((1933)*x_variable_min) + intercept_min)
 min_temp_change
 ```
-
 
 
 
