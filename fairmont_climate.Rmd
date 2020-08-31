@@ -287,3 +287,37 @@ fairmont_snowfall_graph
 ```
 
 
+```{r}
+# Fairmont snowfall take 2
+# read csv
+fairmont_snow <- read_csv(here::here("csv_files",
+                                     "snowfall",
+                                     "fairmont_snow_edit.csv"))
+
+# ------------------------------------
+fairmont_snow_lm <- lm(annualgrowingseason ~ year, data=fairmont_snow)
+summary(fairmont_snow_lm)
+# p-value: 0.06121 - NOT Significant
+
+# -----------------------------------
+fairmont_snow_graph <- ggplot(data=fairmont_snow,
+                                  aes(x=year,
+                                      y=annualgrowingseason)) +
+  geom_line(color="blue") +
+  geom_point(color="blue",
+             size=1.5) +
+  labs(x="Water Year",
+       y="Snowfall (inches)",
+       title="Fairmont") +
+  scale_x_continuous(limits=c(1946, 2011),
+                     breaks=seq(1946,2011,10),
+                     expand=c(0,1)) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  ggsave(here::here("report_graphs",
+             "snowfall",
+             "Fairmont_Snowfall.png"))
+
+fairmont_snow_graph
+```
+
