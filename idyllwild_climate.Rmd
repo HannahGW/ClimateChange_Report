@@ -201,31 +201,28 @@ idyllwild_precip_cv_graph <- ggplot(data=idyllwild_precip,
 idyllwild_precip_cv_graph
 ```
 
+
+
 ```{r}
-# Idyllwild Snowfall: 1946-2019
-# Number of Years missing: 13
+# Idyllwild Snowfall
+# read in csv
 
-# Read in csv file
-idyllwild_snowfall <- read_csv(here::here("csv_files",
-                                          "snowfall",
-                                          "idyllwild_snowfall.csv"))
+idyllwild_snow <- read_csv(here::here("csv_files",
+                                      "snowfall",
+                                      "idyllwild_snowfall_edit.csv"))
 
-# ------------------------------------
+# ---------------------------------------
+# Statistics
+idyllwild_snow_lm <- lm(annualgrowingseason ~ years, data=idyllwild_snow)
+summary(idyllwild_snow_lm)
+# p-value: 0.09413 - NOT Significant
+# x-variable: -0.2328
+# Intercept: 497.6539
 
-# Statistics for Idyllwild Snowfall 
-
-idyllwildsnow_lm <- lm(annual ~ years, data=idyllwild_snowfall)
-summary(idyllwildsnow_lm)
-
-# p-value: 0.0867 = NOT Significant
-
-# --------------------------------------
-
-# Graph of Snowfall - need to edit the raw data so that the years are not continuous.
-
-idyllwild_snowfall_graph <- ggplot(data=idyllwild_snowfall,
+# ---------------------------------------
+idyllwild_snowfall_graph <- ggplot(data=idyllwild_snow,
                                    aes(x=years,
-                                       y=annual)) +
+                                       y=annualgrowingseason)) +
   geom_point(pch=18, color="blue") +
   geom_line(color="blue") +
   theme_minimal() +
