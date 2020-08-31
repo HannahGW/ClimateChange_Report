@@ -241,33 +241,25 @@ cv_change
 ```
 
 
-
-
 ```{r}
 # Palmdale Snowfall
 
 # read in csv
+palmdale_snow_2 <- read_csv(here::here("csv_files",
+                                       "snowfall",
+                                       "palmdale_edit.csv"))
 
-palmdale_snow <- read_csv(here::here("csv_files",
-                                     "snowfall",
-                                     "palmdale_snowfall.csv"))
+# --------------------------------------
+palm_snow_lm <- lm(annualgrowingseason ~ years, data=palmdale_snow_2)
+summary(palm_snow_lm)
+# p-value: 0.0377 - Significant
+# x-variable: -0.03947
+# Intercept: 79.02825
 
-# ----------------------------------
-
-# Statistics for Palmdale Snowfall
-
-palmdalesnow_lm <- lm(total ~ year, data=palmdale_snow)
-summary(palmdalesnow_lm)
-# p-value: 0.03602 - Significant
-# equation: snowfall = -0.04014*(year) + 80.37314
-
-# -----------------------------------
-
-# Graph for Palmdale Snow
-
-palmdalesnow_graph <- ggplot(data=palmdale_snow,
-                                aes(x=year,
-                                    y=total)) +
+# --------------------------------------
+palmsnow_graph <- ggplot(data=palmdale_snow_2,
+                                aes(x=years,
+                                    y=annualgrowingseason)) +
   theme_minimal() +
   geom_point(color = "blue") +
   geom_line(color = "blue") + 
@@ -283,18 +275,18 @@ palmdalesnow_graph <- ggplot(data=palmdale_snow,
               se=FALSE,
               color= "black",
               size=0.5) +
-  annotate("text", x = 2005, y = 17.5, 
-           label = "p-value = 0.03602, slope = -0.04014") +
+  annotate("text", x = 2005, y = 17.5,
+           label = "p-value = 0.0377, slope = -0.03947") +
   annotate("text", x = 2000, y = 16,
-           label = "snowfall = -0.04014*(year) + 80.37314") +
+           label = "snowfall = -0.03947*(year) + 79.02825") +
   ggsave(here::here("report_graphs",
                     "snowfall",
-                    "palmdale_snowfall_graph.png"),
+                    "palmdale_snowfall_graph_take2.png"),
           height=5,
          width=7,
          units="in")
 
-palmdalesnow_graph
+palmsnow_graph
 ```
 
 ```{r}
@@ -305,10 +297,10 @@ palmdalesnow_graph
 # final year: 2010
 
 # -----------------------------------
-# Change in CV: -3.0105
+# Change in CV: -2.96025
 
-x_variable <- -0.04014
-intercept <- 80.37314
+x_variable <- -0.03947
+intercept <- 79.02825
 
 snowfall_change <- (((2010)*x_variable) + intercept) - (((1935)*x_variable) + intercept)
 
